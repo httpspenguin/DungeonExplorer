@@ -11,7 +11,7 @@ namespace DungeonExplorer
         /// Attribute is set to the first room to later be changed
         /// in the code if the player moves rooms
         /// </summary>
-        private Room currentRoom = Room.room1; // Class attribute (within the class Game)
+        private Room currentRoom; // Class attribute (within the class Game)
         
         /// <summary>
         /// For "startMessage" to be used within Start()
@@ -22,7 +22,7 @@ namespace DungeonExplorer
         //private Room.Items items; // Adding Items class as an instance here. "items" is unused here. Remove?
 
         private Player player; //Added as an attribute
-        public Game(Player player) // Constructor- these are the initial values, takes the argument of player obkect
+        public Game(Player player) // Constructor- these are the initial values, takes the argument of player object
         {
             // Initialize the game with one room and one player
             startMessage = "Welcome to Dungeon Explorer! You find yourself in a strange room.";
@@ -37,7 +37,7 @@ namespace DungeonExplorer
         private void StatusCheck()
         {
             Console.WriteLine($"Name: {player.Name}, Health: {player.Health}"); // Player name + health displayed
-            Console.WriteLine($"Inventory: {player.InventoryContents()}");
+            Console.WriteLine($"Inventory: {player.ViewInventory()}");
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace DungeonExplorer
             while (playing) // assumes playing is true for this to execute.
             {
                 Game currentPlay = new Game(player); // currentPlay = object of Game, representative of a current playthrough during the running program
-                Console.WriteLine(currentPlay.startMessage); // Welcomes user
+                Console.WriteLine(currentPlay.startMessage); // Welcomes user (Required to work here)
                 Console.WriteLine(currentRoom.description); // Displays room1's description
                 Console.WriteLine("You can check your status (player name, health, and inventory) by typing 'status.'");
                 Console.WriteLine("Feel free to try the above, or simply press enter to continue.");

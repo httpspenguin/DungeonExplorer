@@ -45,6 +45,7 @@ namespace DungeonExplorer
         /// </summary>
         
         // TO DO: Monsters in each room?
+        // TO DO: Put this in a class called GameMap (requirement for brief)
 
         public static Room room1 = new Room("Currently, you find yourself in a white room. The sparkle of an item catches your eye."); // Begin in front of a locked door. Tell user they can move left, right, or south.
         public static Room room2 = new Room("Description for room 2"); // Items will be found in each new room
@@ -64,7 +65,23 @@ namespace DungeonExplorer
             /// Method to add items for the player to possibly get in Game 
             /// </summary>
             
-            public void InitializeItem() // Public for it to be called in Game.cs, so the items are initialised
+            // TO DO: To add healing items (as a class within this Item class) + their behaviours
+
+            class HealingItems
+            {
+                public string healingItem;
+                public int healingAmount; // The number itself
+                public string description; // Telling players of the heal amount
+            }
+            public void InitializeItem() // Public for it to be called in Game.cs, so the items are avaliable to be picked up
+
+                // Example below of additional items to potentially add
+            //{
+            //    avaliableItems.Add("Torch");
+            //    avaliableItems.Add("Key");
+            //    avaliableItems.Add("Map");
+            //    avaliableItems.Add("Potion");
+            //}
             {
                 avaliableItems.Add("Box");
                 avaliableItems.Add("Knife");

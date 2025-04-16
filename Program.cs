@@ -8,9 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//!! Remove below lines before merging!
-// Need to include: explanation on encapuslation (within video; making things private to a specific class- get and set methods)
-// Item ideas; torch, exit key, knife (max four items? key should always be availble in one room)
+// TO DO: PART OF ASSIGNEMNT: Error checking/handling 
 
 /// <summary>
 /// Main program, instansiates a new game and runs the function within Game.cs
@@ -22,7 +20,7 @@ namespace DungeonExplorer
         static void Main(string[] args) // Belongs to the class, and is not an object (static)
         {
             Player player = Player.NewPlayer(); // Creates a new player using the method in the Player class
-            Game game = new Game(player); // game is an object of the class Game + "player" object is passed as an argument
+            Game game = new Game(player); // game is an object of the class Game + "player" object is passed as an argument (within this file specifically- game is also initialised in Game.cs for program to work as intended)
             game.Start(); // Function from game class being called w/ the object/instance
 
             // Exiting the game
