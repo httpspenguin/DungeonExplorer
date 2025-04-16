@@ -15,15 +15,13 @@ using System.Threading.Tasks;
 /// </summary>
 namespace DungeonExplorer
 {
-    internal class Program // Calls all relevant functions here within other classes
+    internal class Program // Calls all relevant 
     {
         static void Main(string[] args) // Belongs to the class, and is not an object (static)
         {
             Player player = Player.NewPlayer(); // Creates a new player using the method in the Player class
             Game game = new Game(player); // game is an object of the class Game + "player" object is passed as an argument (within this file specifically- game is also initialised in Game.cs for program to work as intended)
             game.Start(); // Function from game class being called w/ the object/instance
-
-            // Exiting the game
             Console.WriteLine("Thanks for playing! Press any key to exit...");
             Console.ReadKey();
         }

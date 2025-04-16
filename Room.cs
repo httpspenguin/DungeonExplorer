@@ -9,7 +9,7 @@ namespace DungeonExplorer
     {   ///<remarks>
         /// Changed to public so Start() could access and print the description
         /// </remarks>
-        public string description; // Test for if the descriptions would change appropiately (each time a 
+        public string description; // Test for if the descriptions would change appropiately
         private Items items; // Instance of Items class
         public Room(string description) // Constructor, blueprint for creating room descriptions
         {  
@@ -30,11 +30,10 @@ namespace DungeonExplorer
             items.InitializeItem(); // Calls the method in this file, as it cannot be called in Games.cs
         }
         /// <summary>
-        /// Error handling w/ new function- in case item initialisation doesn't work as intended
-        /// (previous tests had it return Null)
+        /// Error handling w/ new function- in case item initialisation doesn't work as it's supposed to (previous tests had it return Null)
         /// </summary>
         /// <returns></returns>
-        public string SelectItem() // Function for error handling, not static(?), to check if the item is null or not for the code to run correctly
+        public string SelectItem()
         {
             return items?.ItemSelector() ?? "No items avaliable";
         }

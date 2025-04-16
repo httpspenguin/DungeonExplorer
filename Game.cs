@@ -5,6 +5,42 @@ using System.Media;
 
 namespace DungeonExplorer
 {
+    /// <summary>
+    /// New class to allow for player to enter their own name
+    /// </summary>
+    public class NewPlayer
+    {
+        private static Player player;
+        /// <summary>
+        /// True while loop to ensure the code does throw an exception 
+        // if a player enters a name. "player" is initialised
+        /// </summary>
+        public static void InputName()
+        {
+           string playerName;
+           while (true)
+           {
+                Console.WriteLine("Please enter the player's name: "); // Repeats line if given and empty input until a player enters a name
+                playerName = Console.ReadLine(); 
+                if (!string.IsNullOrEmpty(playerName))
+                {
+                    break;
+                }
+           }
+           
+           player = new Player(playerName, 100); // Setting and initialising Player name and health
+        }
+        /// <summary>
+        /// Function allows for Game class to access player name to display it,
+        /// one method of circumventing a previous bug I ran into.
+        /// </summary>
+        /// <returns>player</returns>
+        public static Player GetPlayer() 
+        {
+            return player;
+        }
+    }
+
     internal class Game
     {   
         /// <summary>
@@ -18,17 +54,16 @@ namespace DungeonExplorer
         /// </summary>
         public string startMessage; // attribute for Game()
 
-        // Commented this out as it is unused, may add back in later
-        //private Room.Items items; // Adding Items class as an instance here. "items" is unused here. Remove?
-
+        private Room.Items items; // Adding Items as an instance here. "items" is unused here. Remove?
         private Player player; //Added as an attribute
         public Game(Player player) // Constructor- these are the initial values, takes the argument of player object
         {
             // Initialize the game with one room and one player
             startMessage = "Welcome to Dungeon Explorer! You find yourself in a strange room.";
             currentRoom = Room.room1; // To update variable later in the code when the user turns. Instead of GetDescription(), I'm using the implementation in a different way, as at this time it's easier for me to understand
-            this.player = player;
+            player = NewPlayer.GetPlayer();
         }
+
 
         /// <summary>
         /// Displays player's name, health, and their inventory for when they type "status."
@@ -41,7 +76,7 @@ namespace DungeonExplorer
         }
         
         /// <summary>
-        /// Contains all the functions and features for running the game.
+        /// Contains all the functions and features for running the game currently.
         /// </summary>
         public void Start()
         {
@@ -52,8 +87,7 @@ namespace DungeonExplorer
                 Console.WriteLine(currentPlay.startMessage); // Welcomes user (Required to work here)
                 Console.WriteLine(currentRoom.description); // Displays room1's description
                 Console.WriteLine("You can check your status (player name, health, and inventory) by typing 'status.'");
-                Console.WriteLine("Feel free to try the above, or simply press enter to continue.");
-
+                
                 string userInput = Console.ReadLine();
                 if (string.Equals(userInput, "status", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                 {
@@ -68,7 +102,6 @@ namespace DungeonExplorer
                 /// Another while loop to gurantee only accepted inputs.
                 /// </summary.
                 string askPickUp;
-                // OPTIONAL; replace: With a switch case
                 while (true)
                 {
                     Console.WriteLine($"You look further to see {item}. Do you want to pick it up? yes/no.");
@@ -77,15 +110,14 @@ namespace DungeonExplorer
                     if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
                         player.PickUpItem(item);
-                        playing = false; // TO DO: Remove once you start game modifications
-                        // ! Add another line here for them to add the item to their inventory (make the class first)
+                        playing = false;
                         break;
                     }
                     else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
-                        Console.WriteLine($"You did not pick up the {item}. Your inventory remains empty.");
-                        playing = false; // TO DO: Remove once you start game modifications
-                        break; 
+                        Console.WriteLine($"You did not pick up {item}. Your inventory remains empty.");
+                        playing = false;
+                        break;
                     }
                     else
                     {
@@ -94,10 +126,9 @@ namespace DungeonExplorer
                 }
                 
                 //Ends game after the player picks up the object or not
-                // Check player; make inventory its own class.
                 
 
-                // Continuation for additional development; allowing user to move into different rooms
+                // Continuation for additional development
                 // if (string.Equals(userInput, "left", StringComparison.OrdinalIgnoreCase))
                 // {
                 //     currentRoom = Room.room2; // Allow for an option for the user to go back to the starting room.
