@@ -64,7 +64,6 @@ namespace DungeonExplorer
             player = NewPlayer.GetPlayer();
         }
 
-
         /// <summary>
         /// Displays player's name, health, and their inventory for when they type "status."
         /// See function within Start()
@@ -72,7 +71,7 @@ namespace DungeonExplorer
         private void StatusCheck()
         {
             Console.WriteLine($"Name: {player.Name}, Health: {player.Health}"); // Player name + health displayed
-            Console.WriteLine($"Inventory: {player.ViewInventory()}");
+            Console.WriteLine($"Inventory: {player.PlayerInventory.ViewInventory()}");
         }
         
         /// <summary>
@@ -109,7 +108,7 @@ namespace DungeonExplorer
                     
                     if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
-                        player.PickUpItem(item);
+                        player.PlayerInventory.PickUpItem(item);
                         playing = false;
                         break;
                     }

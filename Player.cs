@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
-    public class Player // Need to know how to create an object/intertwine it with the other modules.
+    public class Player
     {
         public string Name { get; private set; } // Property
         public int Health { get; private set; } // Property
-        
-        // List is private (encapsulation), can only be accessed within the Player class
-        
-        /// <summary>
-        /// Initialising iventory as a List for the player
-        /// to be able to view with a later function; "StatusCheck()" in Game.cs
-        /// </summary>
-        private List<string> inventory = new List<string>(); // Encapsulation; preventing accidental modifications in the. Only avaliable to the Player class. intialising list of items the player picks up
+        public Inventory PlayerInventory { get; private set; } // Added Inventory property for the Inventory class (assignment requirement)
 
         /// <summary>
         /// Allows for the an instance for a player to be initialised, alongside the class NewPlayer
@@ -29,11 +23,12 @@ namespace DungeonExplorer
         {
             Name = name;
             Health = health;
+            PlayerInventory = new Inventory(); //Intialisation of inventory within the constructor
         }
         /// <summary>
-        /// Static method handeling user input + creating a new player
+        /// Static method handling user input + creating a new player
         /// </summary>
-        public static Player NewPlayer()
+        public static Player NewPlayer() // Class Player as a return type
         {
             string playerName;
             while (true)
@@ -46,44 +41,47 @@ namespace DungeonExplorer
                 }
                 Console.WriteLine("Name cannot be empty. Please try again: ");
             }
-            return new Player(playerName, 100); // Initialising player with a name and health
+            return new Player(playerName, 100); // Initialising player with a name and health when function is called
         }
 
-        // Create an inventory class to move here
-
-        /// <summary>
-        /// Initialising iventory as a List for the player
-        /// to be able to view with a later function; "StatusCheck()" in Game.cs
-        /// </summary>
-        private List<string> inventory = new List<string>(); // Encapsulation; preventing accidental modifications. Only avaliable to the Player class. intialising list of items the player picks up 
-        
-        /// <summary>
-        /// "item" picked from availableItems from the "ItemSelector()"
-        /// function gets added to player's inventory to check (and potentially use)
-        /// </summary>
-        /// <param name="item"></param>
-
-        public void PickUpItem(string item) // Recieves item. Function for putting it into the inventory
+        public class Inventory //Existing relevant inventory functions moved to this class
         {
-            inventory.Add(item);
-            Console.WriteLine($"{item} was added to your inventory.");
-        }
-        /// <summary>
-        /// Selection if as error handling in case nothing 
-        /// is currently in the player's inventory
-        /// </summary>
-        /// <returns>list of "item"s in the inventory</returns>
-        public string InventoryContents() // Allows player to see inventory
-        {
-            if (inventory.Count == 0) 
+            // List is private (encapsulation), can only be accessed + modified within the Player class
+
+            /// <summary>
+            /// Initialising inventory as a List for the player
+            /// to be able to view with a later function; "StatusCheck()" in Game.cs
+            /// </summary>
+
+            private List<string> items = new List<string>(); // Changed list name to "items" to fit reasonable naming conventions
+
+            /// <summary>
+            /// "item" picked from availableItems from the "ItemSelector()"
+            /// function gets added to player's inventory to check (and potentially use)
+            /// </summary>
+            /// <param name="item"></param>
+
+            public void PickUpItem(string item) // Recieves item. Function for putting it into the inventory
             {
-                return "Your inventory is empty!";
+                items.Add(item);
+                Console.WriteLine($"{item} was added to your inventory.");
             }
-            else
+            /// <summary>
+            /// Selection if as error handling in case nothing 
+            /// is currently in the player's inventory
+            /// </summary>
+            /// <returns>list of "item"s in the inventory</returns>
+            public string ViewInventory() // Allows player to see inventory
             {
-                return string.Join(", ", inventory);
+                if (items.Count == 0)
+                {
+                    return "Your inventory is empty!";
+                }
+                else
+                {
+                    return string.Join(", ", items);
+                }
             }
         }
-    }
-        
+    }  
 }
