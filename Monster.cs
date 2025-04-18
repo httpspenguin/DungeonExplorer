@@ -3,8 +3,15 @@
 namespace DungeonExplorer
 {
     //TO DO: PART OF ASSIGNMENT; NEED TO MAKE CREATURE AN ABSTRACT CLASS THAT BOTH MONSTER AND PLAYER INHERIT FROM (Polymorphism)!!
+
+    public class Creature
+    {
+        // TO DO: For what both Monster + Player will inherit from
+    }
+
+
     // TO DO: PART OF ASSIGNEMNT: Will include a (BLUEPRINT) turn based battle (a behaviour/method) within this that can be modified in the harder/different enemy classes
-    public class Monster // Will be a parent class, the monsters for varying difficulties will be inherited from. If this class can't be inherited from multiple times, I'll change it into an interface
+    public class Monster : Creature // Will be a parent class, the monsters for varying difficulties will be inherited from. If this class can't be inherited from multiple times, I'll change it into an interface
 	{
 		public int health; // Add a conditional for this; if health hits zero, the monster is defeated and the interaction ends (needs to MAKE SURE the player can't run around the monster)
 		// EXCEPT: The player can choose to run, but there's a chance that they won't

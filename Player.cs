@@ -7,11 +7,11 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
-    public class Player
+    public class Player : Creature
     {
         public string Name { get; private set; } // Property
         public int Health { get; private set; } // Property
-        public Inventory PlayerInventory { get; private set; } // Added Inventory property for the Inventory class (assignment requirement)
+        public Inventory PlayerInventory { get; private set; } // Added PlayerInventory property for the Inventory class (assignment requirement), so the Game class can access the functions within
 
         /// <summary>
         /// Allows for the an instance for a player to be initialised, alongside the class NewPlayer
