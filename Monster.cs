@@ -6,17 +6,15 @@ namespace DungeonExplorer
 
     public class Creature
     {
-        // TO DO: For what both Monster + Player will inherit from
+        public int health;
+        public string description; // Will this be used in the player class too?
     }
 
 
     // TO DO: PART OF ASSIGNEMNT: Will include a (BLUEPRINT) turn based battle (a behaviour/method) within this that can be modified in the harder/different enemy classes
     public class Monster : Creature // Will be a parent class, the monsters for varying difficulties will be inherited from. If this class can't be inherited from multiple times, I'll change it into an interface
 	{
-		public int health; // Add a conditional for this; if health hits zero, the monster is defeated and the interaction ends (needs to MAKE SURE the player can't run around the monster)
-		// EXCEPT: The player can choose to run, but there's a chance that they won't
-		public string description;
-
+        // TO DO: Add a conditional for this; if health hits zero, the monster is defeated and the interaction ends (needs to MAKE SURE the player can't run around the monster)
 		public Monster()
 		{
 			// Constructor -- setting up initial variables
