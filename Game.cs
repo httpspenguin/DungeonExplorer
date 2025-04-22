@@ -47,20 +47,20 @@ namespace DungeonExplorer
         /// Attribute is set to the first room to later be changed
         /// in the code if the player moves rooms
         /// </summary>
-        private Room currentRoom; // Class attribute (within the class Game)
+        private GameMap.Room currentRoom; // Class attribute (within the class Game)
         
         /// <summary>
         /// For "startMessage" to be used within Start()
         /// </summary>
         public string startMessage; // attribute for Game()
 
-        private Room.Items items; // Adding Items as an instance here. "items" is unused here. Remove?
+        private GameMap.Room.Items items; // Adding Items as an instance here. "items" is unused here. Remove?
         private Player player; //Added as an attribute
         public Game(Player player) // Constructor- these are the initial values, takes the argument of player object
         {
             // Initialize the game with one room and one player
             startMessage = "Welcome to Dungeon Explorer! You find yourself in a strange room.";
-            currentRoom = Room.room1; // To update variable later in the code when the user turns. Instead of GetDescription(), I'm using the implementation in a different way, as at this time it's easier for me to understand
+            currentRoom = GameMap.Room.room1; // To update variable later in the code when the user turns. Instead of GetDescription(), I'm using the implementation in a different way, as at this time it's easier for me to understand
             player = NewPlayer.GetPlayer();
         }
 
@@ -130,7 +130,7 @@ namespace DungeonExplorer
                 // Continuation for additional development
                 // if (string.Equals(userInput, "left", StringComparison.OrdinalIgnoreCase))
                 // {
-                //     currentRoom = Room.room2; // Allow for an option for the user to go back to the starting room.
+                //     currentRoom = GameMap.Room.room2; // Allow for an option for the user to go back to the starting room.
                 // }
 
             }
