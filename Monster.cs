@@ -3,16 +3,19 @@
 namespace DungeonExplorer
 {
     //TO DO: PART OF ASSIGNMENT; NEED TO MAKE CREATURE AN ABSTRACT CLASS THAT BOTH MONSTER AND PLAYER INHERIT FROM (Polymorphism)!!
-
+    interface IDamage // Interface for the damage method within battle (TO DO: FINISH IMPLEMENTATION)
+    {
+        void Damage(int amount); // Method to be implemented in the child classes- call damage in battle; have this as a switch/if/else for attacking monster/player (could have as PlayerTurn as a bool value to determine who takes damage? Or can it be more simple than that)
+        // Query: Implement this interface in the monster/player classes w get/set for health?
+    }
     public class Creature
     {
         public int health;
         public string description; // Will this be used in the player class too?
     }
 
-
     // TO DO: PART OF ASSIGNEMNT: Will include a (BLUEPRINT) turn based battle (a behaviour/method) within this that can be modified in the harder/different enemy classes
-    public class Monster : Creature // Will be a parent class, the monsters for varying difficulties will be inherited from. If this class can't be inherited from multiple times, I'll change it into an interface
+    public class Monster : Creature, IDamage // Will be a parent class, the monsters for varying difficulties will be inherited from. If this class can't be inherited from multiple times, I'll change it into an interface
 	{
         // TO DO: Add a conditional for this; if health hits zero, the monster is defeated and the interaction ends (needs to MAKE SURE the player can't run around the monster)
 		public Monster()
@@ -23,9 +26,18 @@ namespace DungeonExplorer
 			description = "Sample description";
 		}
 
+        void Damage()
+        {
+            // TO DO: Implement damage method for the monster class
+        }
+
         // FOR DEBUGGING (maybe as a test class?): Add a "skip battle" option. Could enter a key/secret word to allow for this to happen (but make sure to remove it afterwords)
 
-		public static void Battle(int health, string description) // Will be a method for the player to engage within
+
+
+        //Implement how damage would work
+
+        public static void Battle(int health, string description) // Will be a method for the player to engage within
         {
 
             // PLANS; buncha TO DOs
@@ -62,8 +74,6 @@ namespace DungeonExplorer
                 //Increment turn counter
             }
         }
-
-		// Check Google notes for notes on this class/plan it out
 	}
 }
 

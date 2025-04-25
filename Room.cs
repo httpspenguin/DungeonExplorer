@@ -19,7 +19,6 @@ namespace DungeonExplorer
                 this.description = description; // "this." refers to current instance of a class
             }
 
-
             /// <summary>
             /// Method in the Room class directly to call a method in the Items class
             /// </summary>
@@ -31,6 +30,7 @@ namespace DungeonExplorer
                 }
                 items.InitializeItem(); // Calls the method in this file, as it cannot be called in Games.cs
             }
+
             /// <summary>
             /// Error handling w/ new function- in case item initialisation doesn't work as it's supposed to (previous tests had it return Null)
             /// </summary>
@@ -46,8 +46,8 @@ namespace DungeonExplorer
             /// </summary>
 
             // TO DO: Monsters in each room?
-            // TO DO: Put this in a class called GameMap (requirement for brief)
 
+            // Instances of rooms to be used in the Game class- only as a single description
             public static Room room1 = new Room("Currently, you find yourself in a white room. The sparkle of an item catches your eye."); // Begin in front of a locked door. Tell user they can move left, right, or south.
             public static Room room2 = new Room("Description for room 2"); // Items will be found in each new room
             public static Room room3 = new Room("Description for room 3");
@@ -61,18 +61,27 @@ namespace DungeonExplorer
             {
                 string oneItem; // An index of a random object the player picks up (see the function "ItemSelector" below)
                 List<string> avaliableItems = new List<string>();
+                List<HealingItems> healingItems = new List<HealingItems>(); // List of healing items
 
                 /// <summary>
                 /// Method to add items for the player to possibly get in Game 
                 /// </summary>
 
-                // TO DO: To add healing items (as a class within this Item class) + their behaviours
+                // Currently DOing: Add healing items (as a class within this Item class) + their behaviours (ONE example below in the object room initialisation)
 
-                class HealingItems
+                class HealingItems : Items // Behaves seperately to the string list of items, as it has a healing amount and description. Made to be a subclass of Items for assignment
                 {
-                    public string healingItem;
+                    // Make healing item list, pick out random index (don't remove it from list of avaliable objects) and add to initialised items
+                    public string name;
                     public int healingAmount; // The number itself
                     public string description; // Telling players of the heal amount
+                }
+
+                class Weapons : Items // Weapons class for assignemnt
+                {
+                    public string name;
+                    // public int damage; TO DO: Will there be a damage amount for the weapon HERE or within the Battle behaviour (check specific object for a Random range of attack damage?)
+                    public string description;
                 }
                 public void InitializeItem() // Public for it to be called in Game.cs, so the items are avaliable to be picked up
 
@@ -88,6 +97,9 @@ namespace DungeonExplorer
                     avaliableItems.Add("Knife");
                     avaliableItems.Add("Lighter");
                     avaliableItems.Add("Key");
+
+                    // Seperate list for healing items, as they're not a single string.
+                    healingItems.Add(new HealingItems { name = "Potion",  });
                 }
 
                 /// <para>
@@ -115,7 +127,6 @@ namespace DungeonExplorer
 
                     return oneItem;
                 }
-
             }
         }
     }
