@@ -33,10 +33,7 @@ namespace DungeonExplorer
 
         // FOR DEBUGGING (maybe as a test class?): Add a "skip battle" option. Could enter a key/secret word to allow for this to happen (but make sure to remove it afterwords)
 
-
-
-        //Implement how damage would work
-
+        // Currently working on this
         public static void Battle(int health, string description) // Will be a method for the player to engage within
         {
 

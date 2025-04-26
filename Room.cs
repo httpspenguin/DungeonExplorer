@@ -13,6 +13,8 @@ namespace DungeonExplorer
             /// </remarks>
             public string description; // Test for if the descriptions would change appropiately
             private Items items; // Instance of Items class
+            
+            //(Remove if necessary)!!! If there is a major error with inheritance from Items, change how the items work. Rather than a string, they could all be objects
             public Room(string description) // Constructor, blueprint for creating room descriptions
             {
                 items = new Items(); ///<remarks> Variable for the Item class so the method + function can be used in Game.cs </remarks>
@@ -62,6 +64,7 @@ namespace DungeonExplorer
                 string oneItem; // An index of a random object the player picks up (see the function "ItemSelector" below)
                 List<string> avaliableItems = new List<string>();
                 List<HealingItems> healingItems = new List<HealingItems>(); // List of healing items
+                List<Weapons> weapons = new List<Weapons>(); // List of weapons
 
                 /// <summary>
                 /// Method to add items for the player to possibly get in Game 
@@ -82,24 +85,30 @@ namespace DungeonExplorer
                     public string name;
                     // public int damage; TO DO: Will there be a damage amount for the weapon HERE or within the Battle behaviour (check specific object for a Random range of attack damage?)
                     public string description;
+
+                    public Weapons WeaponSelect()
+                    {
+                        if (weapons.Count == 0)
+                        {
+                            return null; // Returns nothing is list is empty so code doesn't go into an error. 
+                        }
+
+                    }   
                 }
                 public void InitializeItem() // Public for it to be called in Game.cs, so the items are avaliable to be picked up
-
-                // Example below of additional items to potentially add
-                //{
-                //    avaliableItems.Add("Torch");
-                //    avaliableItems.Add("Key");
-                //    avaliableItems.Add("Map");
-                //    avaliableItems.Add("Potion");
-                //}
                 {
+                    // CURRENT TO DO: Similar to healing items, add weapons with a seperate list
                     avaliableItems.Add("Box");
-                    avaliableItems.Add("Knife");
                     avaliableItems.Add("Lighter");
                     avaliableItems.Add("Key");
+                    avaliableItems.Add("Torch");
 
                     // Seperate list for healing items, as they're not a single string.
-                    healingItems.Add(new HealingItems { name = "Potion",  });
+                    healingItems.Add(new HealingItems { name = "Potion",  healingAmount = 20, description = "TO DO: DESCRIPTIONS"});
+
+                    //Seperate list for weapon objects
+                    weapons.Add(new Weapons { name = "Knife", description = "A basic knife, handy for attacking." });
+                    weapons.Add(new Weapons { name = "Sword", description = "A sword, sharp and deadly. Best weapon to find here." });
                 }
 
                 /// <para>
@@ -113,17 +122,21 @@ namespace DungeonExplorer
                 /// If statement returns nothing is list is empty so code doesn't run into an error.
                 /// </remarks>
                 /// <returns>"oneItem," index of availableItems</returns>
+                
+                // TO DO: Modify function for healings and weapons;
+                // Weapons could be added here as they can be removed from the potential list of collectibles BUT NOT healing items, there should be an abundance
+
                 public string ItemSelector()
                 {
-                    if (avaliableItems.Count == 0)
+                    if (avaliableItems.Count == 0) // or 
                     {
-                        return null; // Returns nothing is list is empty so code doesn't go into an error. Potential debug here.
+                        return null; // Returns nothing is list is empty so code doesn't go into an error. 
                     }
 
                     Random r = new Random();
-                    int randomInt = r.Next(avaliableItems.Count);
-                    oneItem = avaliableItems[randomInt];
-                    avaliableItems.RemoveAt(randomInt); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
+                    int intSelectItem = r.Next(avaliableItems.Count);
+                    oneItem = avaliableItems[intSelectItem];
+                    avaliableItems.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
 
                     return oneItem;
                 }
