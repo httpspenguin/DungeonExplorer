@@ -92,8 +92,9 @@ namespace DungeonExplorer
                 }
                 
                 currentRoom.InitializeRoomItems(); // The items get added to "availableItems" list for the user to pick up
-                Debug.Assert(currentRoom.SelectItem() != null, "This should not return null!"); // Debugging to check if the item is null or not
-                GameMap.Room.Items item = currentRoom.SelectItem(); // Calls function via the object (instance of the class Items) items where an item randomly gets selected. Function changed to SelectItem() to be a failsafe if "items" returns null.
+
+                GameMap gamemapObject = new GameMap();
+                GameMap item = gamemapObject.InitializeRoomItems(); // Calls function via the object (instance of the class Items) items where an item randomly gets selected..
 
                 /// <summary>
                 /// Another while loop to gurantee only accepted inputs.

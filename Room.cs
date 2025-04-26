@@ -26,6 +26,7 @@ namespace DungeonExplorer
             /// <summary>
             /// Method in the Room class directly to call a method in the Items class
             /// </summary>
+            // MIGHT HAVE TO REMOVE ABOVE AND BELOW FOR BUG FIXING
             public void InitializeRoomItems()
             {
                 if (items == null) // Error checking; Check to make sure "items" is initialized and doesn't return null
@@ -34,17 +35,8 @@ namespace DungeonExplorer
                 }
                 items.InitializeItem(); // Calls the method in this file, as it cannot be called in Games.cs
             }
-
-            /// <summary>
-            /// Error handling w/ new function- in case item initialisation doesn't work as it's supposed to (previous tests had it return Null)
-            /// </summary>
-            /// <returns></returns>
             
             // TO DO: Need to modify (or change access in Game.cs within the designated classes for weapons + healing items for their error checking)
-            public string SelectItem()
-            {
-                return items?.ItemSelector() ?? "No items avaliable";
-            }
 
             /// <summary>
             /// Made all public + static, so that Game.cs can access it
@@ -136,7 +128,7 @@ namespace DungeonExplorer
                 // TO DO: Modify function for healings and weapons;
                 // Weapons could be added here as they can be removed from the potential list of collectibles BUT NOT healing items, there should be an abundance
 
-                public string ItemSelector() // Changing how this operates once items is changed to instances
+                public Items ItemSelector() // Changing how this operates once items is changed to instances
                 {
                     if (avaliableItems.Count == 0)
                     {
