@@ -55,6 +55,7 @@ namespace DungeonExplorer
 
             private List<string> items = new List<string>(); // Changed list name to "items" to fit reasonable naming conventions
 
+            // TO DO: Change this summary once you finish how items work
             /// <summary>
             /// "item" picked from availableItems from the "ItemSelector()"
             /// function gets added to player's inventory to check (and potentially use)

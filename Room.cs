@@ -20,7 +20,6 @@ namespace DungeonExplorer
             //(Remove if necessary)!!! If there is a major error with inheritance from Items, change how the items work. Rather than a string, they could all be objects
             public Room(string description) // Constructor, blueprint for creating room descriptions
             {
-                items = new Items(); ///<remarks> Variable for the Item class so the method + function can be used in Game.cs </remarks>
                 this.description = description; // "this." refers to current instance of a class
             }
 
@@ -67,13 +66,15 @@ namespace DungeonExplorer
             public class Items
             {
                 string oneItem; // TO DO: REMOVE"" if Item is made with instances rather than a string
+                string name;
+                string description; //Optional: Player can inspect it a normal item and then get their description (Console.WriteLine([item].description))
                 List<string> avaliableItems = new List<string>(); // TO CHANGE!!
                 List<HealingItems> healingItems = new List<HealingItems>(); // List of healing items
                 List<Weapons> weapons = new List<Weapons>(); // List of weapons
 
                 // To be used for multiple "selectors" (for the general items, weapons, healing items)
                 private static Random r = new Random();
-                
+
                 /// <summary>
                 /// Method to add items for the player to possibly get in Game 
                 /// </summary>
@@ -82,16 +83,13 @@ namespace DungeonExplorer
 
                 class HealingItems : Items // Behaves seperately to the string list of items, as it has a healing amount and description. Made to be a subclass of Items for assignment
                 {
-                    public string name;
+                    // name and description are inherited from the Items class
                     public int healingAmount; // The number itself
-                    public string description; // Telling players of the heal amount
                 }
 
                 class Weapons : Items // Weapons class for assignemnt
                 {
-                    public string name;
                     // public int damage; TO DO: Will there be a damage amount for the weapon HERE or within the Battle behaviour (check specific object for a Random range of attack damage?)
-                    public string description;
 
                     public Weapons WeaponSelect()
                     {
