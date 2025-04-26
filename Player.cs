@@ -53,7 +53,7 @@ namespace DungeonExplorer
             /// to be able to view with a later function; "StatusCheck()" in Game.cs
             /// </summary>
 
-            private List<string> items = new List<string>(); // Changed list name to "items" to fit reasonable naming conventions
+            private List<GameMap.Room.Items> items = new List<GameMap.Room.Items>(); // Changed list name to "items" to fit reasonable naming conventions
 
             // TO DO: Change this summary once you finish how items work
             /// <summary>
@@ -62,7 +62,7 @@ namespace DungeonExplorer
             /// </summary>
             /// <param name="item"></param>
 
-            public void PickUpItem(string item) // Recieves item. Function for putting it into the inventory
+            public void PickUpItem(GameMap.Room.Items item) // Recieves item. Function for putting it into the inventory
             {
                 items.Add(item);
                 Console.WriteLine($"{item} was added to your inventory.");

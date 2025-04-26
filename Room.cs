@@ -15,7 +15,7 @@ namespace DungeonExplorer
             /// Changed to public so Start() could access and print the description
             /// </remarks>
             public string description; // Test for if the descriptions would change appropiately
-            private Items items; // Instance of Items class
+            private Items items; // Instance of Items class within Room class
             
             //(Remove if necessary)!!! If there is a major error with inheritance from Items, change how the items work. Rather than a string, they could all be objects
             public Room(string description) // Constructor, blueprint for creating room descriptions
@@ -68,23 +68,20 @@ namespace DungeonExplorer
                 string oneItem; // TO DO: REMOVE"" if Item is made with instances rather than a string
                 string name;
                 string description; //Optional: Player can inspect it a normal item and then get their description (Console.WriteLine([item].description))
-                List<string> avaliableItems = new List<string>(); // TO CHANGE!!
+                List<Items> avaliableItems = new List<Items>(); // TO CHANGE!!
                 List<HealingItems> healingItems = new List<HealingItems>(); // List of healing items
                 List<Weapons> weapons = new List<Weapons>(); // List of weapons
 
                 // To be used for multiple "selectors" (for the general items, weapons, healing items)
                 private static Random r = new Random();
 
-                /// <summary>
-                /// Method to add items for the player to possibly get in Game 
-                /// </summary>
-
-                // Currently DOing: Add healing items (as a class within this Item class) + their behaviours (ONE example below in the object room initialisation)
-
                 class HealingItems : Items // Behaves seperately to the string list of items, as it has a healing amount and description. Made to be a subclass of Items for assignment
                 {
                     // name and description are inherited from the Items class
                     public int healingAmount; // The number itself
+
+                    //CURRENT TO DO: Adding HealingSelect() method to select a healing item (similar to WeaponSelect() in the Weapons class)
+
                 }
 
                 class Weapons : Items // Weapons class for assignemnt
@@ -101,16 +98,20 @@ namespace DungeonExplorer
                         oneItem = weapons[intSelectItem].name; // Selects the name of the weapon.
                         weapons.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
                         
-                        return weapons[intSelectItem]; // Returns the weapon object itself
+                        return weapons[intSelectItem]; // Returns the weapon object itself removed from potential list
                     }   
-                }
-                public void InitializeItem() // Public for it to be called in Game.cs, so the items are avaliable to be picked up
+                }                
+                
+                /// <summary>
+                /// Methods to add items for the player to possibly get in Game 
+                /// </summary>
+                public void InitializeItem() // Public for it to be called in Game.cs, so the all potential items are avaliable to be picked up
                 {
                     // TO CHANGE
-                    avaliableItems.Add("Box");
-                    avaliableItems.Add("Lighter");
-                    avaliableItems.Add("Key");
-                    avaliableItems.Add("Torch");
+                    avaliableItems.Add(new Items { name = "Box", description = "sample" }); 
+                    avaliableItems.Add(new Items { name = "Lighter" });
+                    avaliableItems.Add(new Items { name = "Key" });
+                    avaliableItems.Add(new Items { name = "Torch" });
 
                     // Seperate list for healing items, as they're not a single string.
                     healingItems.Add(new HealingItems { name = "Potion",  healingAmount = 20, description = "TO DO: DESCRIPTIONS"});
@@ -130,7 +131,7 @@ namespace DungeonExplorer
                 /// <remarks>
                 /// If statement returns nothing is list is empty so code doesn't run into an error.
                 /// </remarks>
-                /// <returns>"oneItem," index of availableItems</returns>
+                /// <returns>the index of availableItems</returns>
                 
                 // TO DO: Modify function for healings and weapons;
                 // Weapons could be added here as they can be removed from the potential list of collectibles BUT NOT healing items, there should be an abundance
@@ -142,10 +143,9 @@ namespace DungeonExplorer
                         return null; // Returns nothing is list is empty so code doesn't go into an error. 
                     }
                     int intSelectItem = r.Next(avaliableItems.Count);
-                    oneItem = avaliableItems[intSelectItem];
                     avaliableItems.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
 
-                    return oneItem;
+                    return avaliableItems[intSelectItem];
                 }
             }
         }
