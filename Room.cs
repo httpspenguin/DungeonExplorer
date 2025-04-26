@@ -26,7 +26,7 @@ namespace DungeonExplorer
             /// </summary>
             public void InitializeRoomItems()
             {
-                if (items == null) // Error checking; Check to make sure items is initialized and doesn't return null
+                if (items == null) // Error checking; Check to make sure "items" is initialized and doesn't return null
                 {
                     items = new Items();
                 }
@@ -66,6 +66,9 @@ namespace DungeonExplorer
                 List<HealingItems> healingItems = new List<HealingItems>(); // List of healing items
                 List<Weapons> weapons = new List<Weapons>(); // List of weapons
 
+                // To be used for multiple "selectors" (for the general items, weapons, healing items)
+                private static Random r = new Random();
+                
                 /// <summary>
                 /// Method to add items for the player to possibly get in Game 
                 /// </summary>
@@ -92,6 +95,8 @@ namespace DungeonExplorer
                         {
                             return null; // Returns nothing is list is empty so code doesn't go into an error. 
                         }
+                        int intSelectItem = r.Next(weapons.Count);
+                        oneItem = weapons[intSelectItem].name; // Selects the name of the weapon
 
                     }   
                 }
@@ -128,12 +133,10 @@ namespace DungeonExplorer
 
                 public string ItemSelector()
                 {
-                    if (avaliableItems.Count == 0) // or 
+                    if (avaliableItems.Count == 0)
                     {
                         return null; // Returns nothing is list is empty so code doesn't go into an error. 
                     }
-
-                    Random r = new Random();
                     int intSelectItem = r.Next(avaliableItems.Count);
                     oneItem = avaliableItems[intSelectItem];
                     avaliableItems.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
