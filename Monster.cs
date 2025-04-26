@@ -29,6 +29,7 @@ namespace DungeonExplorer
         void Damage()
         {
             // TO DO: Implement damage method for the monster class
+            Console.WriteLine("rah!");
         }
 
         // FOR DEBUGGING (maybe as a test class?): Add a "skip battle" option. Could enter a key/secret word to allow for this to happen (but make sure to remove it afterwords)

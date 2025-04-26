@@ -1,10 +1,13 @@
 ﻿using System; 
-using System.Collections.Generic; // Added for Random to be used
-using System.Diagnostics.Contracts;
-using System.Runtime.Remoting.Messaging;
+using System.Collections.Generic;
 
 namespace DungeonExplorer
 {
+    // This file
+    // Is variable "items?" needed, as in other files they are global.
+    // Changing things in Items class to be objects rather than string so details can easily be added to each object and accessed easily in the game code
+
+
     public class GameMap // Added as part of the assignment requirement as the Room class instance is already managed in the Game class
     {
         public class Room
@@ -37,6 +40,8 @@ namespace DungeonExplorer
             /// Error handling w/ new function- in case item initialisation doesn't work as it's supposed to (previous tests had it return Null)
             /// </summary>
             /// <returns></returns>
+            
+            // TO DO: Need to modify (or change access in Game.cs within the designated classes for weapons + healing items for their error checking)
             public string SelectItem()
             {
                 return items?.ItemSelector() ?? "No items avaliable";
@@ -61,8 +66,8 @@ namespace DungeonExplorer
 
             public class Items
             {
-                string oneItem; // An index of a random object the player picks up (see the function "ItemSelector" below)
-                List<string> avaliableItems = new List<string>();
+                string oneItem; // TO DO: REMOVE"" if Item is made with instances rather than a string
+                List<string> avaliableItems = new List<string>(); // TO CHANGE!!
                 List<HealingItems> healingItems = new List<HealingItems>(); // List of healing items
                 List<Weapons> weapons = new List<Weapons>(); // List of weapons
 
@@ -77,7 +82,6 @@ namespace DungeonExplorer
 
                 class HealingItems : Items // Behaves seperately to the string list of items, as it has a healing amount and description. Made to be a subclass of Items for assignment
                 {
-                    // Make healing item list, pick out random index (don't remove it from list of avaliable objects) and add to initialised items
                     public string name;
                     public int healingAmount; // The number itself
                     public string description; // Telling players of the heal amount
@@ -96,13 +100,15 @@ namespace DungeonExplorer
                             return null; // Returns nothing is list is empty so code doesn't go into an error. 
                         }
                         int intSelectItem = r.Next(weapons.Count);
-                        oneItem = weapons[intSelectItem].name; // Selects the name of the weapon
-
+                        oneItem = weapons[intSelectItem].name; // Selects the name of the weapon.
+                        weapons.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
+                        
+                        return weapons[intSelectItem]; // Returns the weapon object itself
                     }   
                 }
                 public void InitializeItem() // Public for it to be called in Game.cs, so the items are avaliable to be picked up
                 {
-                    // CURRENT TO DO: Similar to healing items, add weapons with a seperate list
+                    // TO CHANGE
                     avaliableItems.Add("Box");
                     avaliableItems.Add("Lighter");
                     avaliableItems.Add("Key");
@@ -131,7 +137,7 @@ namespace DungeonExplorer
                 // TO DO: Modify function for healings and weapons;
                 // Weapons could be added here as they can be removed from the potential list of collectibles BUT NOT healing items, there should be an abundance
 
-                public string ItemSelector()
+                public string ItemSelector() // Changing how this operates once items is changed to instances
                 {
                     if (avaliableItems.Count == 0)
                     {

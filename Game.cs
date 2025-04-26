@@ -53,8 +53,6 @@ namespace DungeonExplorer
         /// For "startMessage" to be used within Start()
         /// </summary>
         public string startMessage; // attribute for Game()
-
-        private GameMap.Room.Items items; // Adding Items as an instance here. "items" is unused here. Remove?
         private Player player; //Added as an attribute
         public Game(Player player) // Constructor- these are the initial values, takes the argument of player object
         {
