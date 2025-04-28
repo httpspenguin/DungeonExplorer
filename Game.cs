@@ -58,7 +58,7 @@ namespace DungeonExplorer
         {
             // Initialize the game with one room and one player
             startMessage = "Welcome to Dungeon Explorer! You find yourself in a strange room.";
-            currentRoom = GameMap.Room.room1; // To update variable later in the code when the user turns. Instead of GetDescription(), I'm using the implementation in a different way, as at this time it's easier for me to understand
+            currentRoom = GameMap.Room.room1; // To update variable later in the code when the user turns.
             player = NewPlayer.GetPlayer();
         }
 
@@ -91,29 +91,33 @@ namespace DungeonExplorer
                     StatusCheck();
                 }
                 
-                currentRoom.InitializeRoomItems(); // The items get added to "availableItems" list for the user to pick up
+                currentRoom.InitializeRoomItems(); // The items get added to "availableItems" list for the user to pick up (called from Room.cs)
 
-                GameMap gamemapObject = new GameMap();
-                GameMap item = gamemapObject.InitializeRoomItems(); // Calls function via the object (instance of the class Items) items where an item randomly gets selected..
+                GameMap.Room.Items itemObject = currentRoom.SelectItem();
+                string itemName = itemObject?.name; //Null-conditional in case SelectItem returns null. Changed "item" to itemObject (to reflect Items no longer being a string, but an instance)
+                
 
                 /// <summary>
                 /// Another while loop to gurantee only accepted inputs.
                 /// </summary.
+
                 string askPickUp;
+                
+                // Modify whileloop to continue gamelogic
                 while (true)
                 {
-                    Console.WriteLine($"You look further to see {item}. Do you want to pick it up? yes/no.");
+                    Console.WriteLine($"You look further to see {itemName}. Do you want to pick it up? yes/no.");
                     askPickUp = Console.ReadLine();
                     
                     if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
-                        player.PlayerInventory.PickUpItem(item);
+                        player.PlayerInventory.PickUpItem(itemObject);
                         playing = false;
                         break;
                     }
                     else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
-                        Console.WriteLine($"You did not pick up {item}. Your inventory remains empty.");
+                        Console.WriteLine($"You did not pick up {itemName}. Your inventory remains empty.");
                         playing = false;
                         break;
                     }
