@@ -93,9 +93,15 @@ namespace DungeonExplorer
                 
                 currentRoom.InitializeRoomItems(); // The items get added to "availableItems" list for the user to pick up (called from Room.cs)
 
+                // Having all three Item types (basic items, healing and weapons being called over from Room.cs to be used Game.cs) w/ null-conditional error handelling 
                 GameMap.Room.Items itemObject = currentRoom.SelectItem();
-                string itemName = itemObject?.name; //Null-conditional in case SelectItem returns null. Changed "item" to itemObject (to reflect Items no longer being a string, but an instance)
+                string itemName = itemObject?.Name; //Null-conditional in case SelectItem returns null. Changed "item" to itemObject (to reflect Items no longer being a string, but an instance)
                 
+                GameMap.Room.Items.HealingItems healingObject = currentRoom.SelectHeal();
+                string healName = healingObject?.Name;
+
+                GameMap.Room.Items.Weapons weaponObject = currentRoom.SelectWeapon();
+                string weaponName = weaponObject?.Name;
 
                 /// <summary>
                 /// Another while loop to gurantee only accepted inputs.

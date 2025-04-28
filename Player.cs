@@ -65,7 +65,7 @@ namespace DungeonExplorer
             public void PickUpItem(GameMap.Room.Items item) // Recieves item. Function for putting it into the inventory
             {
                 items.Add(item);
-                Console.WriteLine($"{item.name} was added to your inventory.");
+                Console.WriteLine($"{item.Name} was added to your inventory.");
             }
             /// <summary>
             /// Selection if as error handling in case nothing 
