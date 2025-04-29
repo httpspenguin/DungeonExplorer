@@ -118,7 +118,8 @@ namespace DungeonExplorer
                         weapons.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
                         
                         return weapons[intSelectItem]; // Returns the weapon object itself removed from potential list
-                    }   
+                    }
+                    public int damage;
                 }                
                 
                 /// <summary>
@@ -129,15 +130,15 @@ namespace DungeonExplorer
                     // TO DO: CHANGE (add descriptions)
                     avaliableItems.Add(new Items { Name = "Box", Description = "sample" }); 
                     avaliableItems.Add(new Items { Name = "Lighter", Description = "sample" });
-                    avaliableItems.Add(new Items { Name = "Key", Description = "sample" });
+                    avaliableItems.Add(new Items { Name = "Key", Description = "sample" }); // This can unlock the door to end the game. Give the player a warning message for this.
                     avaliableItems.Add(new Items { Name = "Torch", Description = "sample" });
 
                     // Seperate list for healing items, as they're not a single string.
                     healingItems.Add(new HealingItems { Name = "Potion",  HealingAmount = 20, Description = "TO DO: DESCRIPTIONS"});
 
                     //Seperate list for weapon objects
-                    weapons.Add(new Weapons { Name = "Knife", Description = "A basic knife, handy for attacking." });
-                    weapons.Add(new Weapons { Name = "Sword", Description = "A sword, sharp and deadly. Best weapon to find here." });
+                    weapons.Add(new Weapons { Name = "Knife", Description = "A basic knife, handy for attacking.", damage = r.Next(30, 50) });
+                    weapons.Add(new Weapons { Name = "Sword", Description = "A sword, sharp and deadly. Best weapon to find in this place.", damage = r.Next(50, 100) });
                 }
 
                 /// <para>

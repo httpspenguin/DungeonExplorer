@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.ComTypes;
-using System.Security.Cryptography.X509Certificates;
+using System.Linq;
 
 namespace DungeonExplorer
 {
     public class Player : Creature
     {
-        public string Name { get; private set; } // Property
-        public int Health { get; private set; } // Property
+        public string Name { get; set; } // Property
+        public int Health { get; set; } // Property
         public Inventory PlayerInventory { get; private set; } // Added PlayerInventory property for the Inventory class (assignment requirement), so the Game class can access the functions within
 
         /// <summary>
@@ -80,7 +77,8 @@ namespace DungeonExplorer
                 }
                 else
                 {
-                    return string.Join(", ", items);
+                    // Changed to only displauy the names of the items in the inventory (as they are no longer strings)
+                    return string.Join(", ", items.Select(i => i.Name));
                 }
             }
         }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.CodeDom;
-using System.Media;
 
 namespace DungeonExplorer
 {
@@ -17,25 +14,25 @@ namespace DungeonExplorer
         /// </summary>
         public static void InputName()
         {
-           string playerName;
-           while (true)
-           {
+            string playerName;
+            while (true)
+            {
                 Console.WriteLine("Please enter the player's name: "); // Repeats line if given and empty input until a player enters a name
-                playerName = Console.ReadLine(); 
+                playerName = Console.ReadLine();
                 if (!string.IsNullOrEmpty(playerName))
                 {
                     break;
                 }
-           }
-           
-           player = new Player(playerName, 100); // Setting and initialising Player name and health
+            }
+
+            player = new Player(playerName, 100); // Setting and initialising Player name and health
         }
         /// <summary>
         /// Function allows for Game class to access player name to display it,
         /// one method of circumventing a previous bug I ran into.
         /// </summary>
         /// <returns>player</returns>
-        public static Player GetPlayer() 
+        public static Player GetPlayer()
         {
             return player;
         }
@@ -57,7 +54,7 @@ namespace DungeonExplorer
         public Game(Player player) // Constructor- these are the initial values, takes the argument of player object
         {
             // Initialize the game with one room and one player
-            startMessage = "Welcome to Dungeon Explorer! You find yourself in a strange room.";
+            startMessage = "You find yourself in a strange place. There seems to be 3 different doors.";
             currentRoom = GameMap.Room.room1; // To update variable later in the code when the user turns.
             player = NewPlayer.GetPlayer();
         }
@@ -75,7 +72,7 @@ namespace DungeonExplorer
         /// <summary>
         /// Contains all the functions and features for running the game currently.
         /// </summary>
-        public void Start()
+        public void Start() //REMINDER; Game ends once bool variable *playing* becomes False
         {
             bool playing = true; // Changed to true (away from example). Return to false to end program (condition; if false, end game)
             while (playing) // assumes playing is true for this to execute.
@@ -103,13 +100,13 @@ namespace DungeonExplorer
                 GameMap.Room.Items.Weapons weaponObject = currentRoom.SelectWeapon();
                 string weaponName = weaponObject?.Name;
 
+                string askPickUp;
+                
+                // Optional: Modify messages/storyline flow
+
                 /// <summary>
                 /// Another while loop to gurantee only accepted inputs.
                 /// </summary.
-
-                string askPickUp;
-                
-                // Modify whileloop to continue gamelogic
                 while (true)
                 {
                     Console.WriteLine($"You look further to see {itemName}. Do you want to pick it up? yes/no.");
@@ -118,30 +115,27 @@ namespace DungeonExplorer
                     if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
                         player.PlayerInventory.PickUpItem(itemObject);
-                        playing = false;
                         break;
                     }
                     else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
                         Console.WriteLine($"You did not pick up {itemName}. Your inventory remains empty.");
-                        playing = false;
                         break;
                     }
                     else
                     {
                         Console.Write("You must enter either yes or no.");
+                        // Loop continues until user enters a valid answer.
                     }
                 }
-                
-                //Ends game after the player picks up the object or not
-                
 
-                // Continuation for additional development
                 // if (string.Equals(userInput, "left", StringComparison.OrdinalIgnoreCase))
                 // {
                 //     currentRoom = GameMap.Room.room2; // Allow for an option for the user to go back to the starting room.
                 // }
 
+                // TO DO: Check after a battle if player hp is 0 every time as this entire game is a loop.
+                // If true; Game over message, playing = false, (would break the loop)
             }
         }
     }
