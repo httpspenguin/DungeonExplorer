@@ -127,7 +127,7 @@ namespace DungeonExplorer
                 /// </summary>
                 public void InitializeItem() // Public for it to be called in Game.cs, so the all potential items are avaliable to be picked up
                 {
-                    // TO DO: CHANGE (add descriptions)
+                    // TO DO: CHANGE (add descriptions- which can be displayed if the user "uses" and item- or more accurately "inspects it")
                     avaliableItems.Add(new Items { Name = "Box", Description = "sample" }); 
                     avaliableItems.Add(new Items { Name = "Lighter", Description = "sample" });
                     avaliableItems.Add(new Items { Name = "Key", Description = "sample" }); // This can unlock the door to end the game. Give the player a warning message for this.

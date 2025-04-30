@@ -39,9 +39,8 @@ namespace DungeonExplorer
 			description = "Sample description"; //Remove? Each monster (child classes) will have a different description
 		}
 
-        // FOR DEBUGGING (maybe as a test class?): Add a "skip battle" option. Could enter a key/secret word to allow for this to happen (but make sure to remove it afterwords)
+        // FOR DEBUGGING (maybe as a test class?): Add a "skip battle" option. (break for loop if skip is entered? or would it bee effective in Game.cs?)
 
-        // Currently working on this
         public static void Battle(Player player, Monster monster) // Modified to accept player and monster objects instead of variables (would be more complicated with previous approach)
         {
             // PLANS; buncha TO DOs
@@ -57,34 +56,49 @@ namespace DungeonExplorer
             Random random = new Random();
             int maxPlayerTurn = random.Next(1, 9); // Turns can be between 1-8
             
-            Console.WriteLine($"You encounter a monster! {monster.description}");
+            Console.WriteLine($"You encounter the {monster.Name}! {monster.description}");
 
             for (int playerTurn = 1; playerTurn <= maxPlayerTurn; playerTurn++) // After a certain amount of turns, the monster will get tired and flee. It'll be random but it'll be no less than 8 turns
             {
-                //Console.WriteLine($"You attack the monster! It has {health} health left.");
-                // Add checks for the monster's health for it to end when it reaches 0. Bool variable?
-                int chance = random.Next(1, 101); // 1-100
-
-                //Player attacks monster (Going to implement weapon's attack power here too)
-                Console.WriteLine("You strike first.");
-                //Need to include weapon here for Damage() 
+                //Player attacks monster
+                Console.WriteLine("Your turn to strike!");
+                int playerDamage = random.Next(10, 31); //Base damage if player doesn't have a weapon
+                if (player.EquippedWeapon != null)
+                {
+                    playerDamage = player.EquippedWeapon.damage; // If player has weapon, this variable updates appropiately
+                    Console.WriteLine($"Using your {player.EquippedWeapon.Name}, you attack!");
+                }
+                player.Damage(monster.Name, monster.health, playerDamage); // Call the damage method from the interface
+                Console.WriteLine($"The {monster.Name} has {monster.health} health left.");
 
                 //Checks if monster is dead both before max turns and before it attacks- so it doesn't attack the player when it's supposed to be dead
-                if ()
+                if (monster.Health <= 0)
+                {
+                    Console.WriteLine($"The {monster.Name} has been defeated!");
+                    Console.WriteLine("You are victorious!");
+                }
                 
+                //Monster attacks player
+                int chance = random.Next(1, 101); // 1-100
                 if (chance <= 50) // 50% chance of monster attacking back- if chance is less than or equal to 50, the monster hits the player
                 {
-                    Console.WriteLine("The entity attacks you!");
-                    
-                    // Modify player health and apply damage to here (say how much health they have left
-                    //Increment turn counter
+                    Console.WriteLine($"The {monster.Name} attacks you!");
+                    monster.Damage(player.Name, player.Health, random.Next(1, 15));
+                    Console.WriteLine($"You have {player.Health} health points left.");
+
+                    // Check if player is dead
+                    if (player.Health <= 0)
+                    {
+                        Console.WriteLine($"{player.Name} collapses...");
+                        break; // End the battle loop.
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("The entity misses!");
-                    //Increment turn counter
+                    Console.WriteLine("Phew, the entity misses!");
                 }
             }
+            Console.WriteLine("The monster has fled!"); // If the player doesn't kill the monster, it flees after a certain amount of turns
         }
         // Polymorphism (include two children for Monster classes); different monster classes (with different damages/attack dialogue)
         // Sample battle logic added BELOW to modify. (TO DO: Modify type of monster- current idea; objects)
