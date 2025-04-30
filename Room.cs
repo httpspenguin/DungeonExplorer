@@ -58,7 +58,7 @@ namespace DungeonExplorer
             /// </summary>
 
             // Instances of rooms to be used in the Game class- only as a single description
-            public static Room room1 = new Room("Currently, you find yourself in a white room. The sparkle of an item catches your eye."); // Begin in front of a locked door. Tell user they can move left, right, or south.
+            public static Room room1 = new Room("Currently, you find yourself in a strange room."); // Begin in front of a locked door. Tell user they can move left, right, or south.
             public static Room room2 = new Room("Description where player finds lamp"); // Items will be found in each new room
             public static Room room3 = new Room("Description where player finds chair");
             
