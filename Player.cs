@@ -147,7 +147,7 @@ namespace DungeonExplorer
                 }
                 else
                 {
-                    // Changed to only displauy the names of the items in the inventory- using LINQ Select (as they are no longer strings)
+                    // Changed to only display the names of the items in the inventory- using LINQ Select (as they are no longer strings)
                     return string.Join(", ", items.Select(i => i.Name));
                 }
             }

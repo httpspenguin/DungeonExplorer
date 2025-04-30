@@ -134,7 +134,7 @@ namespace DungeonExplorer
                     // Seperate list for healing items, as they're not a single string.
                     healingItems.Add(new HealingItems { Name = "Potion",  HealingAmount = 20, Description = "A vial of liquid. You determine you'd be able to replenish your health from this."});
                     healingItems.Add(new HealingItems { Name = "Bread", HealingAmount = 40, Description = "Smells... fresh? Doesn't seem to have any mold." });
-                    healingItems.Add(new HealingItems { Name = "Cinnamon roll", HealingAmount = 60, Description = "TO DO: DESCRIPTIONS" });
+                    healingItems.Add(new HealingItems { Name = "Giant chip", HealingAmount = 60, Description = "Crispy and filling." });
 
                     //Seperate list for weapon objects
                     weapons.Add(new Weapons { Name = "Knife", Description = "A basic knife, handy for attacking.", damage = r.Next(30, 50) });

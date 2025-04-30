@@ -125,7 +125,7 @@ namespace DungeonExplorer
                         }
 
                         // Gives player chance to also pick up a weapon in the starting room.
-                        Console.WriteLine("There looks to be a sharp object here too. Do you also pick this up?");
+                        Console.WriteLine("There looks to be a sharp object here too, and something else... Do you also pick these two objects up?");
                         askPickUp = Console.ReadLine();
                         while (true)
                         {
@@ -133,6 +133,15 @@ namespace DungeonExplorer
                             {
                                 Console.WriteLine($"You picked up the {weaponName} and equipped it.");
                                 player.PlayerInventory.PickUpItem(weaponObject);
+                                
+                                Console.WriteLine($"You also picked up three {healName}s.");
+
+                                // Gives player three healing items to start with (ensurance for surviving in battles.)
+                                for (int i = 0; i < 3; i++)
+                                {
+                                    player.PlayerInventory.PickUpItem(healingObject);
+                                }
+
                                 Console.WriteLine("Reminder; you can check your inventory by typing 'status.'");
                                 break;
                             }
@@ -179,6 +188,7 @@ namespace DungeonExplorer
                             break; // Come out of while loop and return to room1
                         }
                         Console.WriteLine("Strangely, the lamp is shaking. You feel if you go up to it, you will engage in a fight.");
+
                         string askFight = Console.ReadLine();
                         
                         // Inner while loop for lamp fight
@@ -192,7 +202,11 @@ namespace DungeonExplorer
                                 {
                                     playing = false; // End the game if player health is 0 (or less, if it goes in the negatives)
                                 }
-                                Console.WriteLine("The lamp left behind something.");
+                                itemObject = currentRoom.SelectItem(); // Call the SelectItem method for the lamp dropping an item
+                                itemName = itemObject?.Name; //Null-conditional in case SelectItem returns null
+                                Console.WriteLine($"The lamp left behind something. You pick up the {itemName}.");
+                                player.PlayerInventory.PickUpItem(itemObject); // Add the item to the player's inventory
+
                                 break; // Break out of inner loop
                             }
                             else if (string.Equals(askFight, "no", StringComparison.OrdinalIgnoreCase))
@@ -207,8 +221,11 @@ namespace DungeonExplorer
                             }
                         }
                     }
+                    if (string.Equals(userInput, "right", StringComparison.OrdinalIgnoreCase)); // Another if instead of "else if", so that the player can navigate to the right room too.
                 }
                 // If the player returns here, there should be a chance that they pick up the key here regardless if they don't find it the first three times
+                
+                // Should this be outside the loop? Maybe this can go inside the loop so the player can visit every room, get the key, and be able to leave. 
                 currentRoom = GameMap.Room.room1;
                 // TO DO: Check after a battle if player hp is 0 every time as this entire game is a loop.
                 // If true; Game over message, playing = false, (would break the loop)
