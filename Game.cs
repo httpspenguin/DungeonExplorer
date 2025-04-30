@@ -115,6 +115,13 @@ namespace DungeonExplorer
                     if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
                         player.PlayerInventory.PickUpItem(itemObject);
+                        if (itemName == "Key")
+                        {
+                            Console.WriteLine("Lucky you! Seems you can leave this place already.");
+                            Console.WriteLine("You unlock the locked door inf front of you and leave. To be continued...");
+                            Console.WriteLine("Game Over. You win! (If you would like to see more of the game, try running the game again?)");
+                            playing = false;
+                        }
                         break;
                     }
                     else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
@@ -129,10 +136,18 @@ namespace DungeonExplorer
                     }
                 }
 
-                // if (string.Equals(userInput, "left", StringComparison.OrdinalIgnoreCase))
-                // {
-                //     currentRoom = GameMap.Room.room2; // Allow for an option for the user to go back to the starting room.
-                // }
+                // Another while true loop to check for user input/navigation
+                while (true)
+                {
+                    if (string.Equals(userInput, "left", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Update room player is in and diapkay description
+                        currentRoom = GameMap.Room.room2;
+                        Console.WriteLine(currentRoom.description);
+                        // Allow for an option for the user to go back to the starting room.
+                    }
+                }
+                
 
                 // TO DO: Check after a battle if player hp is 0 every time as this entire game is a loop.
                 // If true; Game over message, playing = false, (would break the loop)

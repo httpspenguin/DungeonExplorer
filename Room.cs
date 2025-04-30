@@ -57,13 +57,13 @@ namespace DungeonExplorer
             /// Rooms will all have an object the user is able to pick up (see "ItemSelector()" method)
             /// </summary>
 
-            // TO DO: Monsters in each room?
-
             // Instances of rooms to be used in the Game class- only as a single description
             public static Room room1 = new Room("Currently, you find yourself in a white room. The sparkle of an item catches your eye."); // Begin in front of a locked door. Tell user they can move left, right, or south.
-            public static Room room2 = new Room("Description for room 2"); // Items will be found in each new room
-            public static Room room3 = new Room("Description for room 3");
-            public static Room room4 = new Room("Description for room 4");
+            public static Room room2 = new Room("Description where player finds lamp"); // Items will be found in each new room
+            public static Room room3 = new Room("Description where player finds chair");
+            
+            // Final room; gameover room.
+            public static Room room4 = new Room("After inserting the key, you unlock the door...");
 
             /// <remarks>
             /// "item" is a variable within the Player class (for them to pick up and view their inventory)
@@ -105,8 +105,6 @@ namespace DungeonExplorer
 
                 public class Weapons : Items // Weapons class for assignemnt
                 {
-                    // public int damage; TO DO: Will there be a damage amount for the weapon HERE or within the Battle behaviour (check specific object for a Random range of attack damage?)
-
                     public Weapons WeaponSelect()
                     {
                         if (weapons.Count == 0)
@@ -127,15 +125,15 @@ namespace DungeonExplorer
                 /// </summary>
                 public void InitializeItem() // Public for it to be called in Game.cs, so the all potential items are avaliable to be picked up
                 {
-                    // TO DO: CHANGE (add descriptions- which can be displayed if the user "uses" and item- or more accurately "inspects it")
-                    avaliableItems.Add(new Items { Name = "Box", Description = "sample" }); 
-                    avaliableItems.Add(new Items { Name = "Lighter", Description = "sample" });
-                    avaliableItems.Add(new Items { Name = "Key", Description = "sample" }); // This can unlock the door to end the game. Give the player a warning message for this.
-                    avaliableItems.Add(new Items { Name = "Torch", Description = "sample" });
+                    // Descriptions which be displayed if the user "uses" and item- or more accurately "inspects it")
+                    avaliableItems.Add(new Items { Name = "Box", Description = "Small enough to fit in your pocket. You feel a strange compulsion to pick it up." }); 
+                    avaliableItems.Add(new Items { Name = "Lighter", Description = "A small light source." });
+                    avaliableItems.Add(new Items { Name = "Key", Description = "Looks like you can unlock the door from the room you started with." }); // This can unlock the door to end the game. Give the player a warning message for this.
+                    avaliableItems.Add(new Items { Name = "Torch", Description = "A bigger light souce." });
 
                     // Seperate list for healing items, as they're not a single string.
-                    healingItems.Add(new HealingItems { Name = "Potion",  HealingAmount = 20, Description = "TO DO: DESCRIPTIONS"});
-                    healingItems.Add(new HealingItems { Name = "Bread", HealingAmount = 40, Description = "TO DO: DESCRIPTIONS" });
+                    healingItems.Add(new HealingItems { Name = "Potion",  HealingAmount = 20, Description = "A vial of liquid. You determine you'd be able to replenish your health from this."});
+                    healingItems.Add(new HealingItems { Name = "Bread", HealingAmount = 40, Description = "Smells... fresh? Doesn't seem to have any mold." });
                     healingItems.Add(new HealingItems { Name = "Cinnamon roll", HealingAmount = 60, Description = "TO DO: DESCRIPTIONS" });
 
                     //Seperate list for weapon objects
@@ -149,8 +147,7 @@ namespace DungeonExplorer
                 /// to choose a random item, and then it gets removed from the list
                 /// so it doesn't get picked up again.
                 /// </para>
-                
-                // TO DO: Modify function for healings and weapons;
+
                 // Weapons could be added here as they can be removed from the potential list of collectibles BUT NOT healing items, there should be an abundance
 
                 public Items ItemSelector() // Changing how this operates once items is changed to instances
