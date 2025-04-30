@@ -9,6 +9,7 @@ namespace DungeonExplorer
         public string Name { get; set; } // Property
         public int Health { get; set; } // Property
         public Inventory PlayerInventory { get; private set; } // Added PlayerInventory property for the Inventory class (assignment requirement), so the Game class can access the functions within
+        public GameMap.Room.Items.Weapons EquippedWeapon { get; set; } // Property for equipped weapon (for player to use in battle)
 
         /// <summary>
         /// Allows for the an instance for a player to be initialised, alongside the class NewPlayer
@@ -20,7 +21,9 @@ namespace DungeonExplorer
         {
             Name = name;
             Health = health;
-            PlayerInventory = new Inventory(); //Intialisation of inventory within the constructor
+            //Intialisation of inventory within the constructor.
+            PlayerInventory = new Inventory(this);  // "this" refers to the current instance of the Player class
+            EquippedWeapon = null; // No weapon is equipped initially as the player would have to pick it up first
         }
         /// <summary>
         /// Static method handling user input + creating a new player
@@ -43,18 +46,21 @@ namespace DungeonExplorer
 
         public class Inventory //Existing relevant inventory functions moved to this class
         {
-            // List is private (encapsulation), can only be accessed + modified within the Player class
-
             /// <summary>
             /// Initialising inventory as a List for the player
             /// to be able to view with a later function; "StatusCheck()" in Game.cs
             /// </summary>
+            /// 
+            // List is private (encapsulation), can only be accessed + modified within the Player class
+            private List<GameMap.Room.Items> items = new List<GameMap.Room.Items>();
+            private Player owner; // Holds reference to specific Player instance
 
-            private List<GameMap.Room.Items> items = new List<GameMap.Room.Items>(); // Changed list name to "items" to fit reasonable naming conventions
+            public Inventory(Player player)
+            {  owner = player; } // Receieve Player instance in constructor
 
             // TO DO: Change this summary once you finish how items work
             /// <summary>
-            /// "item" picked from availableItems from the "ItemSelector()"
+            /// "item" picked from availableItems, healingItems and weapons from the "SelectItem(), SelectHeal(), and SelectWeapon() resspectively"
             /// function gets added to player's inventory to check (and potentially use)
             /// </summary>
             /// <param name="item"></param>
@@ -63,6 +69,27 @@ namespace DungeonExplorer
             {
                 items.Add(item);
                 Console.WriteLine($"{item.Name} was added to your inventory.");
+                
+                // If statement to check if object is from the Weapon class to equip
+                if (item is GameMap.Room.Items.Weapons weapon)
+                {
+                    EquipWeapon(weapon);
+                }
+            }
+
+            // Function to equip auto-equip weapon to the player
+            public void EquipWeapon(GameMap.Room.Items.Weapons weapon) 
+            {
+                if (items.Contains(weapon))
+                {
+                    owner.EquippedWeapon = weapon; // Set the equipped weapon to the one picked up
+                    Console.WriteLine($"You tightly hold the {weapon.Name}.");
+                }
+                // Error checking; if function is called when player doesn't have a weapon/or any other extreme case
+                else
+                {
+                    Console.WriteLine($"For a moment, you think you're holding something to defend yourself. But you're not.");
+                }
             }
             /// <summary>
             /// Selection if as error handling in case nothing 
@@ -73,7 +100,7 @@ namespace DungeonExplorer
             {
                 if (items.Count == 0)
                 {
-                    return "Your inventory is empty!";
+                    return "Seems that your pockets are empty.";
                 }
                 else
                 {

@@ -18,10 +18,7 @@ namespace DungeonExplorer
         
         public virtual void Damage(string name, int health, int amount)
         {
-            Random random = new Random();
-            amount = random.Next(1, 30); // Random damage amount between 1-30
-
-            //Error checking; Math.Max used to ensure that the damage doesn't go below 0
+            //Error checking; Math.Max used to ensure that the damage doesn't go below 0. Regardless, a check for "health <= 0" will be applied too.
             int damageTaken = Math.Max(0, amount - health);
             Console.WriteLine($"{name} took {damageTaken} damage!");
         }
@@ -69,7 +66,8 @@ namespace DungeonExplorer
                 int chance = random.Next(1, 101); // 1-100
 
                 //Player attacks monster (Going to implement weapon's attack power here too)
-
+                Console.WriteLine("You strike first.");
+                //Need to include weapon here for Damage() 
 
                 //Checks if monster is dead both before max turns and before it attacks- so it doesn't attack the player when it's supposed to be dead
                 if ()
