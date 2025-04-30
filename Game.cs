@@ -10,7 +10,7 @@ namespace DungeonExplorer
         private static Player player;
         /// <summary>
         /// True while loop to ensure the code does throw an exception 
-        // if a player enters a name. "player" is initialised
+        /// if a player enters a name. "player" is initialised
         /// </summary>
         public static void InputName()
         {
@@ -56,7 +56,7 @@ namespace DungeonExplorer
             // Initialize the game with one room and one player
             startMessage = "You find yourself in a strange place. There seems to be 3 different doors.";
             currentRoom = GameMap.Room.room1; // To update variable later in the code when the user turns.
-            player = NewPlayer.GetPlayer();
+            this.player = player; //Use player object passed into constructor
         }
 
         /// <summary>
@@ -81,6 +81,7 @@ namespace DungeonExplorer
                 Console.WriteLine(currentPlay.startMessage); // Welcomes user (Required to work here)
                 Console.WriteLine(currentRoom.description); // Displays room1's description
                 Console.WriteLine("You can check your status (player name, health, and inventory) by typing 'status.'");
+                Console.WriteLine("Press enter to skip to the next prompt.");
                 
                 string userInput = Console.ReadLine();
                 if (string.Equals(userInput, "status", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
@@ -101,14 +102,19 @@ namespace DungeonExplorer
                 string weaponName = weaponObject?.Name;
 
                 string askPickUp;
-                
-                // Optional: Modify messages/storyline flow
+
+                bool weaponPickUp = true;
 
                 /// <summary>
                 /// Another while loop to gurantee only accepted inputs.
                 /// </summary.
                 while (true)
                 {
+                    if (weaponPickUp == false) // Added so that if the player declines to pick up the weapon, the code below will skip over to the next while loop.
+                    {
+                        break;
+                    }
+
                     Console.WriteLine($"You look further to see {itemName} sparkling in the distance. Do you want to pick it up? yes/no.");
                     askPickUp = Console.ReadLine();
 
@@ -122,16 +128,21 @@ namespace DungeonExplorer
                             Console.WriteLine("You unlock the locked door inf front of you and leave. To be continued...");
                             Console.WriteLine("Game Over. You win! (If you would like to see more of the game, try running the game again?)");
                             playing = false;
+                            break;
                         }
-
-                        // Gives player chance to also pick up a weapon in the starting room.
-                        Console.WriteLine("There looks to be a sharp object here too, and something else... Do you also pick these two objects up?");
-                        askPickUp = Console.ReadLine();
-                        while (true)
+                        
+                        if (playing == true) // Only displays message if "playing" variable is true.
+                        {
+                            // Gives player chance to also pick up a weapon in the starting room.
+                            Console.WriteLine("There looks to be a sharp object here too, and something else... Do you also pick these two objects up?");
+                            askPickUp = Console.ReadLine();
+                        }
+                        
+                        while (true && playing == true) // If key is picked up from the start, all the other while loops will be ignored.
                         {
                             if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                             {
-                                Console.WriteLine($"You picked up the {weaponName} and equipped it.");
+                                //Moved the pick up message to the PickUpItem() method
                                 player.PlayerInventory.PickUpItem(weaponObject);
                                 
                                 Console.WriteLine($"You also picked up three {healName}s.");
@@ -147,7 +158,9 @@ namespace DungeonExplorer
                             }
                             else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                             {
-                                Console.WriteLine($"You did not pick up {weaponName}. Your inventory remains empty.");
+                                // Null-conditional added to prevent error if weaponObject is null
+                                Console.WriteLine($"You did not pick up {(weaponObject != null? weaponName : "the sharp object")}. Your inventory remains empty.");
+                                weaponPickUp = false;
                                 break;
                             }
                             else
@@ -156,6 +169,7 @@ namespace DungeonExplorer
                                 // Inner loop continues until answer is given
                             }
                         }
+                        break; //Added to break out of the while loop once the player has picked up an item or not.
                     }
                     else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                     {
@@ -165,12 +179,16 @@ namespace DungeonExplorer
                     else
                     {
                         Console.WriteLine("You must enter either yes or no.");
-                        // Loop continues until user enters a valid answer.
+                        // Loop continues until user enters a valid answer. TO DO; FIX HERE PLZ
                     }
                 }
-
-                // Another while true loop to check for user input/navigation
-                while (true)
+                if (playing == true)
+                { 
+                    Console.WriteLine("You can go left or right. Which way do you want to go?"); // Prompt user for input
+                    // Another while true loop to check for user input/navigation
+                }
+                
+                while (true && playing == true)
                 {
                     userInput = Console.ReadLine();
                     if (string.Equals(userInput, "left", StringComparison.OrdinalIgnoreCase))
@@ -181,6 +199,8 @@ namespace DungeonExplorer
                         
                         // Allow for an option for the user to go back to the starting roo
                         Console.WriteLine("You can go back to the starting room by typing 'back.'");
+                        
+                        userInput = Console.ReadLine();
                         if(string.Equals(userInput, "back", StringComparison.OrdinalIgnoreCase))
                         {
                             currentRoom = GameMap.Room.room1;
@@ -220,6 +240,7 @@ namespace DungeonExplorer
                             else
                             {
                                 Console.WriteLine("You must enter either yes or no.");
+                                askFight = Console.ReadLine(); // Ask again for the user input
                                 // Inner loop continues until answer is given
                             }
                         }
@@ -269,18 +290,22 @@ namespace DungeonExplorer
                             else
                             {
                                 Console.WriteLine("You must enter either yes or no.");
+                                askFight = Console.ReadLine(); // Ask again for the user input
                                 // Inner loop continues until answer is given
                             }
                         }
                     }
                 }
                 
-                // Should this be outside the loop? Maybe this can go inside the loop so the player can visit every room, get the key, and be able to leave. 
-                currentRoom = GameMap.Room.room1;
-                Console.WriteLine("You're back to where you started... Looks like the door is open!");
-                Console.WriteLine("Curious to progress, you walk through the door and find yourself in a new room.");
-                Console.WriteLine("To be continued!");
-                playing = false; // End game
+                // If the game hasn't ended beforehand, variable "playing" set to false will skip these messages. 
+                if (playing == true)
+                {
+                    currentRoom = GameMap.Room.room1;
+                    Console.WriteLine("You're back to where you started... Looks like the door is open!");
+                    Console.WriteLine("Curious to progress, you walk through the door and find yourself in a new room.");
+                    Console.WriteLine("To be continued!");
+                    playing = false; // End game
+                }
             }
         }
     }

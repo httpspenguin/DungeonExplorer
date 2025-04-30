@@ -4,14 +4,12 @@
 
 using System;
 
-// TO DO: PART OF ASSIGNEMNT: Error checking/handling 
-
 /// <summary>
 /// Main program, instansiates a new game and runs the function within Game.cs
 /// </summary>
 namespace DungeonExplorer
 {
-    internal class Program // Calls all relevant 
+    internal class Program // Calls all relevant functions
     {
         static void Main(string[] args) // Belongs to the class, and is not an object (static)
         {
