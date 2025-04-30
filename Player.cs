@@ -91,6 +91,49 @@ namespace DungeonExplorer
                     Console.WriteLine($"For a moment, you think you're holding something to defend yourself. But you're not.");
                 }
             }
+
+            //Using LINQ to check if the player has any healing items in their inventory
+            public bool HasHealingItems()
+            { return items.Any(item => item is GameMap.Room.Items.HealingItems); }
+
+            //LINQ to filter inventory objects to healing items only- useful in battle
+            public void ListHealingItems()
+            {
+                Console.WriteLine("Healing items in your inventory:");
+                int index = 1;
+                foreach (var item in items.OfType<GameMap.Room.Items.HealingItems>())
+                {
+                    Console.WriteLine($"{item.Name} - Healing Amount: {item.HealingAmount}, Description: {item.Description}");
+                    index++;
+                }
+                if (!HasHealingItems())
+                {
+                    Console.WriteLine("You have no healing items in your inventory.");
+                }
+            }
+            public void UseHealingItem(string itemName)
+            {
+                var healingItem = items.OfType<GameMap.Room.Items.HealingItems>()
+                    .FirstOrDefault(item => item.Name.ToLower() == item.Name.ToLower());
+                
+                // Healing item avaliable, player restores health
+                if (healingItem != null)
+                {
+                    owner.Health += healingItem.HealingAmount;
+                    Console.WriteLine($"You used {healingItem.Name} and restored {healingItem.HealingAmount} health.");
+                    items.Remove(healingItem); // Remove the item from the inventory after use
+
+                    if (owner.Health > 120)
+                    {
+                        owner.Health = 120; // Max health cap
+                        Console.WriteLine("You feel revitalised! HP fully restored.");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("You don't have any items in your inventory that can heal you.");
+                }
+            }
             /// <summary>
             /// Selection if as error handling in case nothing 
             /// is currently in the player's inventory
@@ -104,7 +147,7 @@ namespace DungeonExplorer
                 }
                 else
                 {
-                    // Changed to only displauy the names of the items in the inventory (as they are no longer strings)
+                    // Changed to only displauy the names of the items in the inventory- using LINQ Select (as they are no longer strings)
                     return string.Join(", ", items.Select(i => i.Name));
                 }
             }
