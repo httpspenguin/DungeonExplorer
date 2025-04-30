@@ -204,8 +204,11 @@ namespace DungeonExplorer
                                 }
                                 itemObject = currentRoom.SelectItem(); // Call the SelectItem method for the lamp dropping an item
                                 itemName = itemObject?.Name; //Null-conditional in case SelectItem returns null
-                                Console.WriteLine($"The lamp left behind something. You pick up the {itemName}.");
+                                healingObject = currentRoom.SelectHeal(); // Call the SelectHeal method for the lamp dropping a healing item
+                                healName = healingObject?.Name; //Null-conditional in case SelectHeal returns null
+                                Console.WriteLine($"The lamp left behind something. You pick up the {itemName} and {healName}.");
                                 player.PlayerInventory.PickUpItem(itemObject); // Add the item to the player's inventory
+                                player.PlayerInventory.PickUpItem(healingObject); // Add the healing item to the player's inventory
 
                                 break; // Break out of inner loop
                             }
@@ -222,13 +225,62 @@ namespace DungeonExplorer
                         }
                     }
                     if (string.Equals(userInput, "right", StringComparison.OrdinalIgnoreCase)); // Another if instead of "else if", so that the player can navigate to the right room too.
+                    {
+                        // Update room player is in and display description
+                        currentRoom = GameMap.Room.room3;
+                        Console.WriteLine(currentRoom.description);
+
+                        // Allow for an option for the user to go back to the starting room
+                        Console.WriteLine("You can go back to the starting room by typing 'back.'");
+                        if (string.Equals(userInput, "back", StringComparison.OrdinalIgnoreCase))
+                        {
+                            currentRoom = GameMap.Room.room1;
+                            Console.WriteLine("After visiting the room on the right, you return back to where you started. You wonder what the deal with that strange chair was...");
+                            break; // Come out of while loop and return to room1
+                        }
+                        Console.WriteLine("The chair looks like it has been used recently. You hear strange creaking from it. If you go up to it, you will engage in a fight.");
+                        string askFight = Console.ReadLine();
+
+                        // Inner while loop for lamp fight
+                        while (true)
+                        {
+                            if (string.Equals(askFight, "yes", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Monster.Chair chair = new Monster.Chair(); // Create a new instance of the Chair class for player to fight
+                                Monster.Battle(player, chair); // Call the Battle method to start the fight
+                                if (player.Health <= 0)
+                                {
+                                    playing = false; // End the game if player health is 0 (or less, if it goes in the negatives)
+                                }
+                                itemObject = currentRoom.SelectItem(); // Call the SelectItem method for the lamp dropping an item
+                                itemName = itemObject?.Name; //Null-conditional in case SelectItem returns null
+                                healingObject = currentRoom.SelectHeal(); // Call the SelectHeal method for the lamp dropping a healing item
+                                healName = healingObject?.Name; //Null-conditional in case SelectHeal returns null
+                                Console.WriteLine($"The chair left behind something. You pick up the {itemName} and {healingObject}.");
+                                player.PlayerInventory.PickUpItem(itemObject); // Add the item to the player's inventory
+                                player.PlayerInventory.PickUpItem(healingObject); // Add the healing item to the player's inventory
+                                break; // Break out of inner loop
+                            }
+                            else if (string.Equals(askFight, "no", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Console.WriteLine("You did not engage in a fight with the chair. You leave the room.");
+                                break; // Break out of inner loop
+                            }
+                            else
+                            {
+                                Console.WriteLine("You must enter either yes or no.");
+                                // Inner loop continues until answer is given
+                            }
+                        }
+                    }
                 }
-                // If the player returns here, there should be a chance that they pick up the key here regardless if they don't find it the first three times
                 
                 // Should this be outside the loop? Maybe this can go inside the loop so the player can visit every room, get the key, and be able to leave. 
                 currentRoom = GameMap.Room.room1;
-                // TO DO: Check after a battle if player hp is 0 every time as this entire game is a loop.
-                // If true; Game over message, playing = false, (would break the loop)
+                Console.WriteLine("You're back to where you started... Looks like the door is open!");
+                Console.WriteLine("Curious to progress, you walk through the door and find yourself in a new room.");
+                Console.WriteLine("To be continued!");
+                playing = false; // End game
             }
         }
     }

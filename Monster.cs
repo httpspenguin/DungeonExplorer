@@ -40,8 +40,6 @@ namespace DungeonExplorer
             description = "Sample description"; //Remove? Each monster (child classes) will have a different description
         }
 
-        // FOR DEBUGGING (maybe as a test class?): Add a "skip battle" option. (break for loop if skip is entered? or would it bee effective in Game.cs?)
-
         public static void Battle(Player player, Monster monster) // Modified to accept player and monster objects instead of variables (would be more complicated with previous approach)
         {
             Random random = new Random();
