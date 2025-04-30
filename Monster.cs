@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace DungeonExplorer
 {
@@ -14,7 +15,7 @@ namespace DungeonExplorer
     {
         public int health;
         public string description; // Will this be used in the player class too?
-        string name; // To be altered via polymorphism in the child classes/object instantiations
+        public string name; // To be altered via polymorphism in the child classes/object instantiations
         
         public virtual void Damage(string name, int health, int amount)
         {
@@ -68,6 +69,10 @@ namespace DungeonExplorer
                     playerDamage = player.EquippedWeapon.damage; // If player has weapon, this variable updates appropiately
                     Console.WriteLine($"Using your {player.EquippedWeapon.Name}, you attack!");
                 }
+                else
+                {
+                    Console.WriteLine("You attack with your bare hands!"); // If player doesn't have a weapon, this message is displayed
+                }
                 player.Damage(monster.Name, monster.health, playerDamage); // Call the damage method from the interface
                 Console.WriteLine($"The {monster.Name} has {monster.health} health left.");
 
@@ -86,6 +91,8 @@ namespace DungeonExplorer
                     monster.Damage(player.Name, player.Health, random.Next(1, 15));
                     Console.WriteLine($"You have {player.Health} health points left.");
 
+                    //Player healing; have the first part of the loop in a healing statement and have healing as a bool value. Max out health for 120 so the player doesn't infinitely heal
+
                     // Check if player is dead
                     if (player.Health <= 0)
                     {
@@ -95,14 +102,39 @@ namespace DungeonExplorer
                 }
                 else
                 {
-                    Console.WriteLine("Phew, the entity misses!");
+                    Console.WriteLine($"Phew, the {monster.Name} misses!");
                 }
             }
             Console.WriteLine("The monster has fled!"); // If the player doesn't kill the monster, it flees after a certain amount of turns
         }
-        // Polymorphism (include two children for Monster classes); different monster classes (with different damages/attack dialogue)
-        // Sample battle logic added BELOW to modify. (TO DO: Modify type of monster- current idea; objects)
-        public class 
-	}
+        // Polymorphism (two children for Monster classes); different monster classes with different damage dialogue
+        public class Lamp : Monster
+        {
+            public Lamp()
+            {
+                health = 60;
+                description = "Seems hostile. From the way it's moving, you presume it's angry.";
+                name = "Lamp";
+            }
+            public override void Damage(string name, int health, int amount)
+            {
+                Console.WriteLine($"The {name} cracks!");
+                base.Damage(name, health, amount); // Calling base class' Damage interface for core logic
+            }
+        }
+        public class Chair : Monster
+        {
+            public Chair()
+            {
+                health = 80;
+                description = "You hear the chair creaking eerily towards you. You think it might be a monster.";
+                name = "Chair";
+            }
+            public override void Damage(string name, int health, int amount)
+            {
+                Console.WriteLine($"The {name} splinters!");
+                base.Damage(name, health, amount); // Calling base class' Damage interface for core logic
+            }
+        }
+    }
 }
-
