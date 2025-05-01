@@ -270,16 +270,17 @@ namespace DungeonExplorer
 
                         // Allow for an option for the user to go back to the starting room
                         Console.WriteLine("You can go back to the starting room by typing 'back.'");
-                        Console.WriteLine("Enter 'yes' if you want to fight. Otherwise, enter no to return to the starting room.");
+                        Console.WriteLine("If you want to continue and not go back, press enter.");
 
                         userInput = Console.ReadLine();
                         if (string.Equals(userInput, "back", StringComparison.OrdinalIgnoreCase))
                         {
                             currentRoom = GameMap.Room.room1;
                             Console.WriteLine("After visiting the room on the right, you return back to where you started. You wonder what the deal with that strange chair was...");
-                            break; // Come out of while loop and return to room1
+                            break; // Come out of while loop and return to room1 MAKE SURE THIS WORKS!! TO DO!
                         }
                         Console.WriteLine("The chair looks like it has been used recently. You hear strange creaking from it. If you go up to it, you will engage in a fight.");
+                        Console.WriteLine("Enter 'yes' if you want to fight. Otherwise, enter no to return to the starting room.");
                         string askFight = Console.ReadLine();
 
                         // Inner while loop for lamp fight
@@ -301,14 +302,28 @@ namespace DungeonExplorer
 
                                 healingObject = currentRoom.SelectHeal(); // Call the SelectHeal method for the lamp dropping a healing item
                                 healName = healingObject?.Name; //Null-conditional in case SelectHeal returns null
-                                Console.WriteLine($"The chair left behind something. You pick up the {itemName} and {healingObject}.");
+                                Console.WriteLine($"The chair left behind something. You pick up the {itemName} and {healName}.");
                                 player.PlayerInventory.PickUpItem(itemObject); // Add the item to the player's inventory
                                 player.PlayerInventory.PickUpItem(healingObject); // Add the healing item to the player's inventory
+
+                                Console.WriteLine("After finishing the battle, you return to the room you started in");
+                                // After battle, you return to the first room. This prevents the eternal loop.
+                                currentRoom = GameMap.Room.room1;
+                                Console.WriteLine("You're back to where you started... Looks like the door is open!");
+                                Console.WriteLine("Curious to progress, you walk through the door and find yourself in a new room.");
+                                Console.WriteLine("To be continued!");
+                                playing = false; // End game
                                 break; // Break out of inner loop
                             }
                             else if (string.Equals(askFight, "no", StringComparison.OrdinalIgnoreCase))
                             {
                                 Console.WriteLine("You did not engage in a fight with the chair. You leave the room.");
+                                // Ends the game, this no longer loops!
+                                currentRoom = GameMap.Room.room1;
+                                Console.WriteLine("You're back to where you started... Looks like the door is open!");
+                                Console.WriteLine("Curious to progress, you walk through the door and find yourself in a new room.");
+                                Console.WriteLine("To be continued!");
+                                playing = false; // End game
                                 break; // Break out of inner loop
                             }
                             else

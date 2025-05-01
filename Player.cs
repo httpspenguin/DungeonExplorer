@@ -7,7 +7,11 @@ namespace DungeonExplorer
     public class Player : Creature
     {
         public string Name { get; set; } // Property
-        public int Health { get; set; } // Property
+        public int Health // Property- update player's health in Battle() (Monster.cs)
+        {
+            get { return health; }
+            set { health = value; }
+        }
         public Inventory PlayerInventory { get; private set; } // Added PlayerInventory property for the Inventory class (assignment requirement), so the Game class can access the functions within
         public GameMap.Room.Items.Weapons EquippedWeapon { get; set; } // Property for equipped weapon (for player to use in battle)
 

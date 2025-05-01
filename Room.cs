@@ -1,5 +1,6 @@
 ﻿using System; 
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DungeonExplorer
 {
@@ -147,9 +148,11 @@ namespace DungeonExplorer
                         return null; // Returns nothing is list is empty so code doesn't go into an error. 
                     }
                     int intSelectItem = r.Next(0, avaliableItems.Count - 1); // Ensures index is always valid
+                    Items selectedItem = avaliableItems[intSelectItem]; // Selects a random item from the list
                     avaliableItems.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
-
-                    return avaliableItems[intSelectItem];
+                    Debug.Assert(selectedItem != null, "ItemSelector should not return a null item from a non-empty list.");
+                    Debug.Assert(avaliableItems.Count >= 0, "ItemSelector should not leave an empty list.");
+                    return selectedItem;
                 }
             }
         }

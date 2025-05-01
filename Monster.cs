@@ -128,7 +128,6 @@ namespace DungeonExplorer
                 else //Error handling; if action input is invalid
                 {
                     Console.WriteLine("Invalid action. Please choose [Attack], [Heal], or [Run].");
-                    playerTurn--; // Decrement the turn counter to allow for another action
                 }
 
                 //Monster attacks player
@@ -137,6 +136,7 @@ namespace DungeonExplorer
                 {
                     Console.WriteLine($"The {monster.Name} attacks you!");
                     monster.Damage(player.Name, ref player.health, random.Next(1, 30));
+
                     Console.WriteLine($"You have {player.Health} health points left.");
 
                     // Check if player is dead
@@ -168,7 +168,7 @@ namespace DungeonExplorer
             }
             public override void Damage(string name, ref int health, int amount)
             {
-                Console.WriteLine("The lamp cracks!");
+                Console.WriteLine("The lamp cracks!"); // Attack message
                 base.Damage(name, ref health, amount); // Calling base class' Damage interface for core logic
             }
         }
@@ -182,7 +182,7 @@ namespace DungeonExplorer
             }
             public override void Damage(string name, ref int health, int amount)
             {
-                Console.WriteLine($"The chair splinters!");
+                Console.WriteLine($"The chair splinters!"); // Attack message
                 base.Damage(name, ref health, amount); // Calling base class' Damage interface for core logic
             }
         }
