@@ -155,7 +155,13 @@ namespace DungeonExplorer
                                     player.PlayerInventory.PickUpItem(healingObject);
                                 }
 
-                                Console.WriteLine("Reminder; you can check your inventory by typing 'status.'");
+                                Console.WriteLine("Want to check your inventory by typing 'status?' If you no, and you wish to continue, press enter.");
+                                // Added here to allow player to enter "status"
+                                string statusInput = Console.ReadLine();
+                                if (string.Equals(statusInput, "status", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
+                                {
+                                    StatusCheck();
+                                }
                                 break;
                             }
                             else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
@@ -201,6 +207,7 @@ namespace DungeonExplorer
                         
                         // Allow for an option for the user to go back to the starting roo
                         Console.WriteLine("You can go back to the starting room by typing 'back.'");
+                        Console.WriteLine("Otherwise, press enter to continue.");
                         
                         userInput = Console.ReadLine();
                         if(string.Equals(userInput, "back", StringComparison.OrdinalIgnoreCase))
@@ -210,8 +217,7 @@ namespace DungeonExplorer
                             break; // Come out of while loop and return to room1
                         }
                         Console.WriteLine("Strangely, the lamp is shaking. You feel if you go up to it, you will engage in a fight.");
-
-                        // REMOVE? : Line previously here: string askFight = Console.ReadLine();
+                        Console.WriteLine("Enter 'yes' if you want to fight. Otherwise, enter no to return to the starting room.");
                         
                         // Inner while loop for lamp fight
                         while (true)
@@ -237,6 +243,9 @@ namespace DungeonExplorer
                                 player.PlayerInventory.PickUpItem(itemObject); // Add the item to the player's inventory
                                 player.PlayerInventory.PickUpItem(healingObject); // Add the healing item to the player's inventory
 
+                                //LINES HERE; Whether or not you fight the lamp, the code jumps to you heading to the Right room. Find a workaround. (and check if the same applies for the "right" move)
+
+                                Console.WriteLine("You then head to the room on the right.");
                                 break; // Break out of inner loop
                             }
                             else if (string.Equals(askFight, "no", StringComparison.OrdinalIgnoreCase))
@@ -252,6 +261,7 @@ namespace DungeonExplorer
                             }
                         }
                     }
+                    // This happens to run regardless 
                     if (string.Equals(userInput, "right", StringComparison.OrdinalIgnoreCase)); // Another if instead of "else if", so that the player can navigate to the right room too.
                     {
                         // Update room player is in and display description
@@ -260,6 +270,9 @@ namespace DungeonExplorer
 
                         // Allow for an option for the user to go back to the starting room
                         Console.WriteLine("You can go back to the starting room by typing 'back.'");
+                        Console.WriteLine("Enter 'yes' if you want to fight. Otherwise, enter no to return to the starting room.");
+
+                        userInput = Console.ReadLine();
                         if (string.Equals(userInput, "back", StringComparison.OrdinalIgnoreCase))
                         {
                             currentRoom = GameMap.Room.room1;

@@ -70,8 +70,8 @@ namespace DungeonExplorer
                 // If statement to check if object is from the Weapon class to equip
                 if (item is GameMap.Room.Items.Weapons weapon)
                 {
+                    items.Add(weapon); // Add the weapon to the inventory FIRST so the error checking in EquipWeapon() doesn't incorrectly display the message under the "else" statement                 
                     EquipWeapon(weapon);
-                    items.Add(weapon); // Add the weapon to the inventory
                 }
                 items.Add(item);
                 Console.WriteLine($"{item.Name} was added to your inventory.");

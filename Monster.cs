@@ -2,10 +2,9 @@
 
 namespace DungeonExplorer
 {
-    //TO DO: PART OF ASSIGNMENT; NEED TO MAKE CREATURE AN ABSTRACT CLASS THAT BOTH MONSTER AND PLAYER INHERIT FROM (Polymorphism)!!
     interface IDamageable // Interface for the damage method within battle (TO DO: FINISH IMPLEMENTATION)
     {
-        void Damage(string name, int health, int amount); // Method to be implemented in the child classes- call damage in battle; have this as a switch/if/else for attacking monster/player (could have as PlayerTurn as a bool value to determine who takes damage? Or can it be more simple than that)
+        void Damage(string name, ref int health, int amount); // Method to be implemented in the child classes- call damage in battle; have this as a switch/if/else for attacking monster/player (could have as PlayerTurn as a bool value to determine who takes damage? Or can it be more simple than that)
         // Added properties to be used as part of the interface
         int Health { get; set; }
         string Name { get; set; }
@@ -16,10 +15,12 @@ namespace DungeonExplorer
         public string description; // Will this be used in the player class too?
         public string name; // To be altered via polymorphism in the child classes/object instantiations
         
-        public virtual void Damage(string name, int health, int amount)
+        // Added "ref" keyword to health paramter- so that it's the reference to the original health variable and not a copy (as health wasn't being updated during battle)
+        public virtual void Damage(string name, ref int health, int amount) 
         {
             //Error checking; Math.Max used to ensure that the damage doesn't go below 0. Regardless, a check for "health <= 0" will be applied too.
-            int damageTaken = Math.Max(0, amount - health);
+            int damageTaken = Math.Max(0, amount); // Damage taken is simply the damage dealt
+            health -= damageTaken; // Subtract the damage from the health
             Console.WriteLine($"{name} took {damageTaken} damage!");
         }
 
@@ -69,7 +70,13 @@ namespace DungeonExplorer
                     {
                         Console.WriteLine("You attack with your bare hands!"); // If player doesn't have a weapon, this message is displayed
                     }
-                    player.Damage(monster.Name, monster.health, playerDamage); // Call the damage method from the interface
+                    player.Damage(monster.Name, ref monster.health, playerDamage); // Call the damage method from the interface (added ref keyword)
+                    
+                    if (monster.Health <= 0)
+                    {
+                        monster.Health = 0; // Sets this way so health can be displayed as "0" instead of negative
+                    }
+
                     Console.WriteLine($"The {monster.Name} has {monster.health} health left.");
 
                     //Checks if monster is dead both before max turns and before it attacks- so it doesn't attack the player when it's supposed to be dead
@@ -107,7 +114,7 @@ namespace DungeonExplorer
                     else
                     {
                         Console.WriteLine("You failed to escape! The monster attacks you!");
-                        monster.Damage(player.Name, player.Health, random.Next(1, 15));
+                        monster.Damage(player.Name, ref player.health, random.Next(1, 15)); //player.health rather than player.Health as Health is a property + health is the is the actual field
                         Console.WriteLine($"You have {player.Health} health points left.");
 
                         // Check if player is dead from this attack
@@ -129,7 +136,7 @@ namespace DungeonExplorer
                 if (chance <= 50) // 50% chance of monster attacking back- if chance is less than or equal to 50, the monster hits the player
                 {
                     Console.WriteLine($"The {monster.Name} attacks you!");
-                    monster.Damage(player.Name, player.Health, random.Next(1, 30));
+                    monster.Damage(player.Name, ref player.health, random.Next(1, 30));
                     Console.WriteLine($"You have {player.Health} health points left.");
 
                     // Check if player is dead
@@ -159,10 +166,10 @@ namespace DungeonExplorer
                 description = "Seems hostile. From the way it's moving, you presume it's angry.";
                 name = "Lamp";
             }
-            public override void Damage(string name, int health, int amount)
+            public override void Damage(string name, ref int health, int amount)
             {
                 Console.WriteLine("The lamp cracks!");
-                base.Damage(name, health, amount); // Calling base class' Damage interface for core logic
+                base.Damage(name, ref health, amount); // Calling base class' Damage interface for core logic
             }
         }
         public class Chair : Monster
@@ -173,10 +180,10 @@ namespace DungeonExplorer
                 description = "You hear the chair creaking eerily towards you. You think it might be a monster.";
                 name = "Chair";
             }
-            public override void Damage(string name, int health, int amount)
+            public override void Damage(string name, ref int health, int amount)
             {
                 Console.WriteLine($"The chair splinters!");
-                base.Damage(name, health, amount); // Calling base class' Damage interface for core logic
+                base.Damage(name, ref health, amount); // Calling base class' Damage interface for core logic
             }
         }
     }
