@@ -13,10 +13,7 @@ namespace DungeonExplorer
             
             // Instances of Items class (and the child classes) within Room class to call functions within
             private Items itemManager = new Items(); 
-            private Items.HealingItems healingItemManager = new Items.HealingItems();
-            private Items.Weapons weaponManager = new Items.Weapons();
             
-            //(Remove if necessary)!!! If there is a major error with inheritance from Items, change how the items work. Rather than a string, they could all be objects
             public Room(string description) // Constructor, blueprint for creating room descriptions
             {
                 this.description = description; // "this." refers to current instance of a class
@@ -38,20 +35,17 @@ namespace DungeonExplorer
             {
                 return itemManager.ItemSelector();
             }
-
-            //For Weapon selection here (weaponManager), the function
-
+            
+            //Access WeaponSelect and HealingSelect through itemManager
             public Items.Weapons SelectWeapon()
             {
-                return weaponManager.WeaponSelect();
+                return itemManager.WeaponSelect(); 
             }
 
             public Items.HealingItems SelectHeal()
             {
-                return healingItemManager.HealingSelect();
+                return itemManager.HealingSelect();
             }
-            
-            // TO DO: Need to modify (or change access in Game.cs within the designated classes for weapons + healing items for their error checking)
 
             /// <summary>
             /// Made all public + static, so that Game.cs can access it
@@ -84,39 +78,37 @@ namespace DungeonExplorer
                 public class HealingItems : Items // Behaves seperately to the string list of items, as it has a healing amount and description. Made to be a subclass of Items for assignment
                 {
                     // name and description are inherited from the Items class
-                    public int HealingAmount { get; set; } // The number itself
-
-                    //CURRENT TO DO: Adding HealingSelect() method to select a healing item (similar to WeaponSelect() in the Weapons class)
-                    
-                    public HealingItems HealingSelect()
-                    {
-                        if (healingItems.Count == 0)
-                        {
-                            return null;
-                        }
-                        int intSelectItem = r.Next(0, healingItems.Count - 1);
-                        // Unlike both weapons and general items, the healing items will be possible to repeatedly be found
-
-                        return healingItems[intSelectItem];
-                    }
+                    public int HealingAmount { get; set; }
                 }
-
+                
                 public class Weapons : Items // Weapons class for assignemnt
                 {
-                    public Weapons WeaponSelect()
-                    {
-                        if (weapons.Count == 0)
-                        {
-                            return null; // Returns nothing is list is empty so code doesn't go into an error. 
-                        }
-                        int intSelectItem = r.Next(0, weapons.Count - 1);
-
-                        weapons.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
-                        
-                        return weapons[intSelectItem]; // Returns the weapon object itself removed from potential list
-                    }
                     public int damage;
-                }                
+                }    
+                
+                // Function moved outside of the HealingItems class.
+                public HealingItems HealingSelect()
+                {
+                     if (healingItems.Count == 0)
+                     {
+                          return null;
+                     }
+                     int intSelectItem = r.Next(0, healingItems.Count - 1);
+                     // Unlike both weapons and general items, the healing items will be possible to repeatedly be found
+                     return healingItems[intSelectItem];
+                }
+                // Function moved outside of the Weapons class.
+                public Weapons WeaponSelect()
+                {
+                    if (weapons.Count == 0)
+                    {
+                        return null; // Returns nothing is list is empty so code doesn't go into an error. 
+                    }
+                    int intSelectItem = r.Next(0, weapons.Count - 1);
+                    weapons.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again   
+                    return weapons[intSelectItem]; // Returns the weapon object itself removed from potential list
+                }
+                
                 
                 /// <summary>
                 /// Methods to add items for the player to possibly get in Game 

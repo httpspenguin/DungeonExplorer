@@ -71,13 +71,10 @@ namespace DungeonExplorer
                 if (item is GameMap.Room.Items.Weapons weapon)
                 {
                     EquipWeapon(weapon);
+                    items.Add(weapon); // Add the weapon to the inventory
                 }
-                // Added else statement so that this doesn't return null if player is piocking up
-                else
-                {
-                    items.Add(item);
-                    Console.WriteLine($"{item.Name} was added to your inventory.");
-                }
+                items.Add(item);
+                Console.WriteLine($"{item.Name} was added to your inventory.");
             }
 
             // Function to equip auto-equip weapon to the player
