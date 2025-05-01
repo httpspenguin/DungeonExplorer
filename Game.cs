@@ -133,11 +133,11 @@ namespace DungeonExplorer
                         {
                             // Gives player chance to also pick up a weapon in the starting room.
                             Console.WriteLine("There looks to be a sharp object here too, and something else... Do you also pick these two objects up?");
-                            askPickUp = Console.ReadLine();
                         }
                         
                         while (true && playing == true) // If key is picked up from the start, all the other while loops will be ignored.
                         {
+                            askPickUp = Console.ReadLine(); // Moved to the while loop
                             if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                             {
                                 // Moved to select only when player picks it up
@@ -211,11 +211,12 @@ namespace DungeonExplorer
                         }
                         Console.WriteLine("Strangely, the lamp is shaking. You feel if you go up to it, you will engage in a fight.");
 
-                        string askFight = Console.ReadLine();
+                        // REMOVE? : Line previously here: string askFight = Console.ReadLine();
                         
                         // Inner while loop for lamp fight
                         while (true)
                         {
+                            string askFight = Console.ReadLine();
                             if (string.Equals(askFight, "yes", StringComparison.OrdinalIgnoreCase))
                             {
                                 Monster.Lamp lamp = new Monster.Lamp(); // Create a new instance of the Lamp class for player to fight
