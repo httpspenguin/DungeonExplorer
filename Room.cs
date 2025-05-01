@@ -20,6 +20,7 @@ namespace DungeonExplorer
             public Room(string description) // Constructor, blueprint for creating room descriptions
             {
                 this.description = description; // "this." refers to current instance of a class
+                InitializeRoomItems();
             }
 
             /// <summary>
@@ -93,7 +94,7 @@ namespace DungeonExplorer
                         {
                             return null;
                         }
-                        int intSelectItem = r.Next(healingItems.Count);
+                        int intSelectItem = r.Next(0, healingItems.Count - 1);
                         // Unlike both weapons and general items, the healing items will be possible to repeatedly be found
 
                         return healingItems[intSelectItem];
@@ -108,7 +109,7 @@ namespace DungeonExplorer
                         {
                             return null; // Returns nothing is list is empty so code doesn't go into an error. 
                         }
-                        int intSelectItem = r.Next(weapons.Count);
+                        int intSelectItem = r.Next(0, weapons.Count - 1);
 
                         weapons.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
                         
@@ -153,7 +154,7 @@ namespace DungeonExplorer
                     {
                         return null; // Returns nothing is list is empty so code doesn't go into an error. 
                     }
-                    int intSelectItem = r.Next(avaliableItems.Count);
+                    int intSelectItem = r.Next(0, avaliableItems.Count - 1); // Ensures index is always valid
                     avaliableItems.RemoveAt(intSelectItem); // Removes item from list once it is picked up by the player, for other items to be picked randomly in other rooms when the function is called again
 
                     return avaliableItems[intSelectItem];

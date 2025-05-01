@@ -67,13 +67,16 @@ namespace DungeonExplorer
 
             public void PickUpItem(GameMap.Room.Items item) // Recieves item. Function for putting it into the inventory
             {
-                items.Add(item);
-                Console.WriteLine($"{item.Name} was added to your inventory.");
-                
                 // If statement to check if object is from the Weapon class to equip
                 if (item is GameMap.Room.Items.Weapons weapon)
                 {
                     EquipWeapon(weapon);
+                }
+                // Added else statement so that this doesn't return null if player is piocking up
+                else
+                {
+                    items.Add(item);
+                    Console.WriteLine($"{item.Name} was added to your inventory.");
                 }
             }
 

@@ -57,8 +57,12 @@ namespace DungeonExplorer
             startMessage = "You find yourself in a strange place. There seems to be 3 different doors.";
             currentRoom = GameMap.Room.room1; // To update variable later in the code when the user turns.
             this.player = player; //Use player object passed into constructor
+            
+            // Moved to constructor in hopes items don't return null
+            // Remove if added to Room.cs
+            currentRoom.InitializeRoomItems(); // The items get added to "availableItems" list for the user to pick up (called from Room.cs)
         }
-
+                
         /// <summary>
         /// Displays player's name, health, and their inventory for when they type "status."
         /// See function within Start()
@@ -88,18 +92,12 @@ namespace DungeonExplorer
                 {
                     StatusCheck();
                 }
-                
-                currentRoom.InitializeRoomItems(); // The items get added to "availableItems" list for the user to pick up (called from Room.cs)
 
                 // Having all three Item types (basic items, healing and weapons being called over from Room.cs to be used Game.cs) w/ null-conditional error handelling 
                 GameMap.Room.Items itemObject = currentRoom.SelectItem();
                 string itemName = itemObject?.Name; //Null-conditional in case SelectItem returns null. Changed "item" to itemObject (to reflect Items no longer being a string, but an instance)
                 
-                GameMap.Room.Items.HealingItems healingObject = currentRoom.SelectHeal();
-                string healName = healingObject?.Name;
 
-                GameMap.Room.Items.Weapons weaponObject = currentRoom.SelectWeapon();
-                string weaponName = weaponObject?.Name;
 
                 string askPickUp;
 
@@ -142,9 +140,13 @@ namespace DungeonExplorer
                         {
                             if (string.Equals(askPickUp, "yes", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                             {
-                                //Moved the pick up message to the PickUpItem() method
+                                // Moved to select only when player picks it up
+                                GameMap.Room.Items.Weapons weaponObject = currentRoom.SelectWeapon();
+                                string weaponName = weaponObject?.Name;
                                 player.PlayerInventory.PickUpItem(weaponObject);
                                 
+                                GameMap.Room.Items.HealingItems healingObject = currentRoom.SelectHeal();
+                                string healName = healingObject?.Name;
                                 Console.WriteLine($"You also picked up three {healName}s.");
 
                                 // Gives player three healing items to start with (ensurance for surviving in battles.)
@@ -159,7 +161,7 @@ namespace DungeonExplorer
                             else if (string.Equals(askPickUp, "no", StringComparison.OrdinalIgnoreCase)) // Allows for input to be case-insensitive.
                             {
                                 // Null-conditional added to prevent error if weaponObject is null
-                                Console.WriteLine($"You did not pick up {(weaponObject != null? weaponName : "the sharp object")}. Your inventory remains empty.");
+                                Console.WriteLine("You did not pick up the sharp object. Your inventory remains empty.");
                                 weaponPickUp = false;
                                 break;
                             }
@@ -224,6 +226,10 @@ namespace DungeonExplorer
                                 }
                                 itemObject = currentRoom.SelectItem(); // Call the SelectItem method for the lamp dropping an item
                                 itemName = itemObject?.Name; //Null-conditional in case SelectItem returns null
+                                
+                                GameMap.Room.Items.HealingItems healingObject = currentRoom.SelectHeal();
+                                string healName = healingObject?.Name;
+
                                 healingObject = currentRoom.SelectHeal(); // Call the SelectHeal method for the lamp dropping a healing item
                                 healName = healingObject?.Name; //Null-conditional in case SelectHeal returns null
                                 Console.WriteLine($"The lamp left behind something. You pick up the {itemName} and {healName}.");
@@ -275,6 +281,10 @@ namespace DungeonExplorer
                                 }
                                 itemObject = currentRoom.SelectItem(); // Call the SelectItem method for the lamp dropping an item
                                 itemName = itemObject?.Name; //Null-conditional in case SelectItem returns null
+
+                                GameMap.Room.Items.HealingItems healingObject = currentRoom.SelectHeal();
+                                string healName = healingObject?.Name;
+
                                 healingObject = currentRoom.SelectHeal(); // Call the SelectHeal method for the lamp dropping a healing item
                                 healName = healingObject?.Name; //Null-conditional in case SelectHeal returns null
                                 Console.WriteLine($"The chair left behind something. You pick up the {itemName} and {healingObject}.");

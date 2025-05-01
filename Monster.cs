@@ -161,7 +161,7 @@ namespace DungeonExplorer
             }
             public override void Damage(string name, int health, int amount)
             {
-                Console.WriteLine($"The {name} cracks!");
+                Console.WriteLine("The lamp cracks!");
                 base.Damage(name, health, amount); // Calling base class' Damage interface for core logic
             }
         }
@@ -175,7 +175,7 @@ namespace DungeonExplorer
             }
             public override void Damage(string name, int health, int amount)
             {
-                Console.WriteLine($"The {name} splinters!");
+                Console.WriteLine($"The chair splinters!");
                 base.Damage(name, health, amount); // Calling base class' Damage interface for core logic
             }
         }
